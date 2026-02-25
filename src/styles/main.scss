@@ -1,0 +1,48 @@
+@use "./variables.scss" as *;
+@import "animate.css";
+@import "element-plus/dist/index.css";
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: $color-bg;
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: $color-text;
+  line-height: 1.6;
+}
+
+.cute-card {
+  border-radius: $border-radius;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 182, 193, 0.2);
+  }
+}
+
+.cute-button {
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+// 悬浮动画
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+// 响应式布局容器
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}

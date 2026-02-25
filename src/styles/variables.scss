@@ -1,0 +1,15 @@
+// 柔和配色方案
+$color-primary: #ffb6c1; // 浅粉色
+$color-secondary: #e0b0ff; // 淡紫色
+$color-accent: #a7f3d0; // 薄荷绿
+$color-bg: #fff5f8; // 背景淡粉
+$color-text: #5c4b51; // 柔和深色文字
+$border-radius: 16px;
+
+:root {
+  --el-color-primary: #{$color-primary};
+  --el-color-success: #{$color-accent};
+  --el-color-warning: #fce7cf;
+  --el-color-danger: #ff8a8a;
+  --el-color-info: #{$color-secondary};
+}
