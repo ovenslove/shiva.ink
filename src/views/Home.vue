@@ -1,10 +1,17 @@
 <template>
-  <div class="home-view container">
-    <!-- 欢迎横幅 -->
-    <div class="welcome-banner animate__animated animate__fadeInDown">
-      <h1 class="welcome-title">欢迎来到 Shiva 的小天地 ✨</h1>
-      <p class="welcome-desc">记录成长，分享快乐，遇见最美好的自己</p>
-    </div>
+  <div class="home-view">
+    <!-- 全屏视频 Hero 区域 -->
+    <HeroVideo 
+      src="https://player.vimeo.com/external/370331493.sd.mp4?s=7b23197340c693749dc64877f0d79742713a6c1e&profile_id=139&oauth2_token_id=57447761"
+      poster="https://picsum.photos/id/1015/1920/1080"
+    />
+
+    <div class="home-content container">
+      <!-- 欢迎横幅 -->
+      <div class="welcome-banner animate__animated animate__fadeInUp">
+        <h1 class="welcome-title">欢迎来到 Shiva 的小天地 ✨</h1>
+        <p class="welcome-desc">记录成长，分享快乐，遇见最美好的自己</p>
+      </div>
 
     <el-row :gutter="40">
       <!-- 个人资料卡片 -->
@@ -64,10 +71,12 @@
         </div>
       </el-col>
     </el-row>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import HeroVideo from '../components/HeroVideo.vue'
 import { useUserStore, useMediaStore } from '../store'
 
 /**
@@ -83,8 +92,12 @@ const mediaStore = useMediaStore()
 @use "../styles/variables.scss" as *;
 
 .home-view {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 0;
+}
+
+.home-content {
+  padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 .welcome-banner {

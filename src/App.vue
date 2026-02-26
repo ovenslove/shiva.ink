@@ -124,17 +124,27 @@ onUnmounted(() => {
 <style lang="scss">
 @use "./styles/variables.scss" as *;
 
+:root { 
+  --el-header-height: 60px;
+}
+
+.main { 
+  padding: 0 !important;
+}
+
 .layout-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: var(--el-header-height);
 }
 
 .header {
+  width: 100%;
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 2000; // 确保在普通内容之上
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
