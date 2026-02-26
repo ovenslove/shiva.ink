@@ -11,7 +11,7 @@ html, body {
   color: $color-text;
   line-height: 1.6;
   scrollbar-gutter: stable; // 预留滚动条空间，防止宽度抖动
-  overflow-x: hidden; // 禁止横向溢出
+  // overflow-x: hidden; // 禁止横向溢出
   
   // 针对 iOS 设备的滚动优化
   -webkit-overflow-scrolling: touch;
