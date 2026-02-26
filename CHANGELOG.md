@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.5](https://github.com/ovenslove/shiva.ink/compare/v1.0.4...v1.0.5) (2026-02-26)
+
+
+### 💄 样式 / Styles
+
+* 调整页面头部高度以统一视觉风格 ([6cd04ea](https://github.com/ovenslove/shiva.ink/commit/6cd04eaf87bf9caaba76afdab175d8a6348b89c7))
+
 ### [1.0.4](https://github.com/ovenslove/shiva.ink/compare/v1.0.3...v1.0.4) (2026-02-26)
 
 
