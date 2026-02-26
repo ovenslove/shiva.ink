@@ -177,7 +177,7 @@ onMounted(() => {
 .video-controls {
   position: absolute;
   bottom: 40px;
-  right: 40px;
+  left: 40px;
   z-index: 10;
 
   .control-btn {
@@ -213,7 +213,7 @@ onMounted(() => {
   }
   .video-controls {
     bottom: 20px;
-    right: 20px;
+    left: 20px;
   }
 }
 </style>

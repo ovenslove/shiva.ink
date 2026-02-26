@@ -2,8 +2,8 @@
   <div class="home-view">
     <!-- 全屏视频 Hero 区域 -->
     <HeroVideo 
-      src="https://player.vimeo.com/external/370331493.sd.mp4?s=7b23197340c693749dc64877f0d79742713a6c1e&profile_id=139&oauth2_token_id=57447761"
-      poster="https://picsum.photos/id/1015/1920/1080"
+      src="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/oghsfcA6hYgCMvHuRIuHfYwQHyEhfEY0exAfyT.mov"
+      poster="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/oghsfcA6hYgCMvHuRIuHfYwQHyEhfEY0exAfyT.jpeg"
     />
 
     <div class="home-content container">
