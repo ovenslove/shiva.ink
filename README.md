@@ -19,6 +19,11 @@ Shiva.ink 是一个基于 Vue 3 + TypeScript + Vite 构建的个人博客/作品
   - 具备加载状态缓冲、优雅淡入淡出过渡，彻底消除黑屏闪烁。
   - 智能降级策略：在网络不佳时自动显示对应比例的静态封面图。
 
+- **🚫 极致防缩放体验**：
+  - 全方位禁用页面缩放（Viewport 限制 + JS 拦截）。
+  - 针对 iOS 深度优化，有效阻止双指缩放及双击缩放手势。
+  - 确保页面在任何设备上始终以 1:1 的原始比例稳定呈现。
+
 - **🧚 交互式爱心粒子特效**：
   - 深度优化的鼠标/触摸移动爱心生成算法。
   - 采用单渲染循环 (Single Animation Loop) 与对象池 (Object Pooling) 技术，确保 60FPS 的极致流畅度。
@@ -66,11 +71,20 @@ npm run build
 npm run preview
 ```
 
-## � 版本管理与发布
+## 🔄 版本管理与发布
 
-项目采用 [Semantic Versioning (SemVer)](https://semver.org/lang/zh-CN/) 规范，并使用 `standard-version` 自动化发布流程。
+项目采用 [Semantic Versioning (SemVer)](https://semver.org/lang/zh-CN/) 规范，并使用 `standard-version` 配合 **GitHub Actions** 实现自动化发布。
 
-### 版本发布流程
+### 自动化发布机制
+
+项目配置了智能 GitHub Actions 工作流 `auto-release.yml`，能够根据分支前缀自动判定发布类型：
+- `feature/*` ➔ 自动触发 **Minor** 版本升级。
+- `bugfix/*` 或 `hotfix/*` ➔ 自动触发 **Patch** 版本升级。
+- `release/*` ➔ 自动触发 **Major** 版本升级。
+
+工作流会自动处理版本递增、更新日志生成及 Git 标签推送，并内置了 `git pull --rebase` 冲突预处理机制，确保发布流程的稳健性。
+
+### 手动发布流程
 
 1.  **提交更改**：确保所有更改已提交并推送到 `master` 分支。
 2.  **运行发布脚本**：
@@ -90,7 +104,7 @@ npm run preview
 - **前端展示**：页面底部页脚显示当前运行版本。
 - **静态接口**：可以通过访问 `/version.json` 获取当前生产环境的最新版本号。
 
-## �📦 部署与分发
+## 📦 部署与分发
 
 项目通过 **GitHub Actions** 自动化构建并部署至 **GitHub Pages**。
 
