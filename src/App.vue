@@ -1,15 +1,17 @@
 <template>
   <el-container class="layout-container">
-    <el-header class="header">
+    <el-header class="header" :class="{ 'is-scrolled': isScrolled }">
       <div class="nav-content container">
         <div class="logo" @click="$router.push('/')">
           <span class="logo-text">Shiva.ink</span>
         </div>
+
+        <!-- 桌面端菜单 -->
         <el-menu
           :default-active="activeMenu"
           mode="horizontal"
           router
-          class="nav-menu"
+          class="nav-menu hidden-sm-and-down"
           :ellipsis="false"
         >
           <el-menu-item index="/">首页</el-menu-item>
@@ -17,7 +19,58 @@
           <el-menu-item index="/video">视频</el-menu-item>
           <el-menu-item index="/archive">归档</el-menu-item>
         </el-menu>
+
+        <!-- 移动端菜单按钮 -->
+        <div class="mobile-menu-trigger hidden-md-and-up">
+          <el-button link @click="mobileMenuVisible = true">
+            <el-icon :size="28" color="#ffb6c1"><Menu /></el-icon>
+          </el-button>
+        </div>
       </div>
+
+      <!-- 移动端侧边抽屉 -->
+      <el-drawer
+        v-model="mobileMenuVisible"
+        direction="rtl"
+        size="280px"
+        :with-header="false"
+        class="mobile-drawer"
+        append-to-body
+        :z-index="3000"
+        :lock-scroll="false"
+      >
+        <div class="drawer-content">
+          <div class="drawer-logo">
+            <span class="logo-text">Shiva.ink</span>
+          </div>
+          <el-menu
+            :default-active="activeMenu"
+            router
+            class="mobile-nav-menu"
+            @select="mobileMenuVisible = false"
+          >
+            <el-menu-item index="/">
+              <el-icon><HomeFilled /></el-icon>
+              <span>首页</span>
+            </el-menu-item>
+            <el-menu-item index="/gallery">
+              <el-icon><Picture /></el-icon>
+              <span>相册</span>
+            </el-menu-item>
+            <el-menu-item index="/video">
+              <el-icon><VideoCamera /></el-icon>
+              <span>视频</span>
+            </el-menu-item>
+            <el-menu-item index="/archive">
+              <el-icon><Collection /></el-icon>
+              <span>归档</span>
+            </el-menu-item>
+          </el-menu>
+          <div class="drawer-footer">
+            <p>Made with ❤️ for Shiva</p>
+          </div>
+        </div>
+      </el-drawer>
     </el-header>
 
     <el-main class="main">
@@ -34,14 +87,16 @@
       </div>
     </el-footer>
 
-    <!-- 粒子效果背景 (可选) -->
-    <div id="particles-js" class="particles-bg"></div>
+    <!-- 全局交互特效 -->
+    <InteractiveEffects />
   </el-container>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { HomeFilled, Picture, VideoCamera, Collection, Menu } from '@element-plus/icons-vue'
+import InteractiveEffects from './components/InteractiveEffects.vue'
 
 /**
  * 根组件
@@ -50,6 +105,20 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const activeMenu = computed(() => route.path)
+const mobileMenuVisible = ref(false)
+const isScrolled = ref(false)
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 20
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll, { passive: true })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <style lang="scss">
@@ -62,14 +131,23 @@ const activeMenu = computed(() => route.path)
 }
 
 .header {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 10px rgba(255, 182, 193, 0.1);
+  z-index: 2000; // 确保在普通内容之上
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
   height: 70px;
+  border-bottom: 1px solid transparent;
+
+  &.is-scrolled {
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 20px rgba(255, 182, 193, 0.15);
+    border-bottom: 1px solid rgba(255, 182, 193, 0.2);
+  }
 
   .nav-content {
     display: flex;
@@ -80,13 +158,22 @@ const activeMenu = computed(() => route.path)
 
   .logo {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
     .logo-text {
-      font-size: 24px;
+      font-size: 28px;
       font-weight: bold;
       background: linear-gradient(45deg, $color-primary, $color-secondary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-family: 'Pacifico', cursive; // 建议引入可爱字体
+      font-family: 'Comic Sans MS', 'Pacifico', cursive;
+    }
+
+    &::before {
+      content: '🎀';
+      font-size: 24px;
     }
   }
 
@@ -102,11 +189,74 @@ const activeMenu = computed(() => route.path)
       }
     }
   }
+
+  .mobile-menu-trigger {
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* 抽屉导航样式 */
+.mobile-drawer {
+  .el-drawer__body {
+    padding: 0;
+    background-color: $color-bg;
+  }
+
+  .drawer-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 30px 0;
+
+    .drawer-logo {
+      padding: 0 25px 30px;
+      .logo-text {
+        font-size: 24px;
+        font-weight: bold;
+        background: linear-gradient(45deg, $color-primary, $color-secondary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: 'Comic Sans MS', cursive;
+      }
+    }
+
+    .mobile-nav-menu {
+      border-right: none;
+      background: transparent;
+      flex: 1;
+
+      .el-menu-item {
+        height: 60px;
+        line-height: 60px;
+        font-size: 18px;
+        margin: 5px 15px;
+        border-radius: 12px;
+        
+        &.is-active {
+          background: rgba(255, 182, 193, 0.1) !important;
+          color: $color-primary !important;
+        }
+
+        .el-icon {
+          font-size: 20px;
+          margin-right: 12px;
+        }
+      }
+    }
+
+    .drawer-footer {
+      padding: 20px;
+      text-align: center;
+      color: #ccc;
+      font-size: 12px;
+    }
+  }
 }
 
 .main {
   flex: 1;
-  padding: 40px 0;
+  padding: 0; // 取消默认 padding，由内部 view 控制或保持结构
 }
 
 .footer {

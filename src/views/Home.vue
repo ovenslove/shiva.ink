@@ -1,5 +1,11 @@
 <template>
   <div class="home-view container">
+    <!-- 欢迎横幅 -->
+    <div class="welcome-banner animate__animated animate__fadeInDown">
+      <h1 class="welcome-title">欢迎来到 Shiva 的小天地 ✨</h1>
+      <p class="welcome-desc">记录成长，分享快乐，遇见最美好的自己</p>
+    </div>
+
     <el-row :gutter="40">
       <!-- 个人资料卡片 -->
       <el-col :xs="24" :sm="8">
@@ -77,7 +83,32 @@ const mediaStore = useMediaStore()
 @use "../styles/variables.scss" as *;
 
 .home-view {
-  padding-top: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.welcome-banner {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  backdrop-filter: blur(8px);
+  border: 2px dashed $color-primary;
+
+  .welcome-title {
+    font-size: 36px;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, $color-primary, $color-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+  }
+
+  .welcome-desc {
+    font-size: 18px;
+    color: #888;
+  }
 }
 
 .profile-card {

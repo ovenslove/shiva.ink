@@ -122,16 +122,16 @@ const filteredAlbums = computed(() => {
   min-height: 400px;
 }
 
-.gallery-item {
-  margin-bottom: 20px;
-}
-
 .album-card {
+  margin-bottom: 25px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 182, 193, 0.2);
+
   .image-wrapper {
     position: relative;
-    height: 200px;
+    width: 100%;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
-    cursor: pointer;
 
     .album-image {
       width: 100%;
@@ -145,14 +145,14 @@ const filteredAlbums = computed(() => {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(255, 182, 193, 0.4);
       display: flex;
       justify-content: center;
       align-items: center;
       opacity: 0;
       transition: opacity 0.3s ease;
-      color: white;
-      font-size: 30px;
+      color: #fff;
+      font-size: 32px;
     }
 
     &:hover {
@@ -169,23 +169,27 @@ const filteredAlbums = computed(() => {
     padding: 15px;
 
     .album-title {
-      margin: 0 0 10px 0;
-      font-size: 16px;
+      margin: 0 0 8px 0;
+      font-size: 18px;
       color: $color-text;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
     .album-meta {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: #999;
+      flex-direction: column;
+      gap: 8px;
+
+      .date {
+        font-size: 13px;
+        color: #999;
+      }
 
       .tags {
         display: flex;
+        flex-wrap: wrap;
         gap: 5px;
       }
     }

@@ -76,6 +76,11 @@ const mediaStore = useMediaStore()
 }
 
 .video-card {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 182, 193, 0.2);
+  margin-bottom: 25px;
+
   .video-player-container {
     position: relative;
     width: 100%;
@@ -94,20 +99,25 @@ const mediaStore = useMediaStore()
 
     .video-title {
       margin: 0 0 10px 0;
-      font-size: 18px;
+      font-size: 20px;
       color: $color-text;
+      font-weight: bold;
     }
 
     .video-meta {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #999;
-      font-size: 14px;
+      flex-direction: column;
+      gap: 10px;
+
+      .date {
+        font-size: 13px;
+        color: #999;
+      }
 
       .tags {
         display: flex;
-        gap: 8px;
+        flex-wrap: wrap;
+        gap: 5px;
       }
     }
   }
