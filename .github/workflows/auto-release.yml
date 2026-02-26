@@ -1,0 +1,92 @@
+name: Auto Release
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  auto-release:
+    runs-on: ubuntu-latest
+    # 避免由发布脚本生成的提交再次触发工作流 (匹配 standard-version 默认提交信息)
+    if: "!contains(github.event.head_commit.message, 'chore(release):')"
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # 使用 GITHUB_TOKEN 进行写操作
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Determine Release Type
+        id: release_type
+        shell: bash
+        run: |
+          # 获取当前分支名称或 PR 源分支名称
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          else
+            # 对于 push 到 master，尝试从 commit message 中提取原始分支名（针对 PR 合并后的情况）
+            COMMIT_MSG="${{ github.event.head_commit.message }}"
+            # 提取 "from username/branch-name" 中的 branch-name
+            BRANCH_NAME=$(echo "$COMMIT_MSG" | grep -oE "from [^/]+/[^ ]+" | cut -d'/' -f2 || echo "master")
+          fi
+          
+          echo "Analyzing branch: $BRANCH_NAME"
+          
+          TYPE="patch" # 默认补丁更新
+          
+          if [[ "$BRANCH_NAME" =~ ^feature/ ]]; then
+            TYPE="minor"
+          elif [[ "$BRANCH_NAME" =~ ^bugfix/ ]] || [[ "$BRANCH_NAME" =~ ^hotfix/ ]]; then
+            TYPE="patch"
+          elif [[ "$BRANCH_NAME" =~ ^release/ ]]; then
+            TYPE="major"
+          fi
+          
+          echo "Release type determined: $TYPE"
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Create Release
+        env:
+          RELEASE_TYPE: ${{ steps.release_type.outputs.type }}
+        run: |
+          echo "Executing release for type: $RELEASE_TYPE"
+          # 仅在 master 分支推送时真正打标签，PR 阶段仅更新文件但不打标签以供预览（可选）
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/master" ]; then
+            npm run release -- --release-as $RELEASE_TYPE
+            git push --follow-tags origin master
+          else
+            # 在 PR 阶段，我们只更新 CHANGELOG 和版本号到当前分支，不打标签
+            npm run release -- --release-as $RELEASE_TYPE --skip.tag
+            git add .
+            git commit -m "chore(release): update version and changelog [skip ci]"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
+
+      - name: Handle Errors
+        if: failure()
+        run: |
+          echo "Auto release failed. Please check the logs and ensure branch naming follows the convention (feature/*, bugfix/*, etc.)"

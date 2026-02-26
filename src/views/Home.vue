@@ -2,10 +2,11 @@
   <div class="home-view">
     <!-- 全屏视频 Hero 区域 -->
     <HeroVideo 
-      src="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/oghsfcA6hYgCMvHuRIuHfYwQHyEhfEY0exAfyT.mov"
-      poster="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/oghsfcA6hYgCMvHuRIuHfYwQHyEhfEY0exAfyT.jpeg"
+      landscapeSrc="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/owQiTIFIdXAIXB1PiQB7ka2jpqEIW4PPEATRm.MP4"
+      portraitSrc="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/oghsfcA6hYgCMvHuRIuHfYwQHyEhfEY0exAfyT.mov"
+      landscapePoster="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/owQiTIFIdXAIXB1PiQB7ka2jpqEIW4PPEATRm.jpeg"
+      portraitPoster="https://perfectdiary-public.oss-cn-shenzhen.aliyuncs.com/oghsfcA6hYgCMvHuRIuHfYwQHyEhfEY0exAfyT.jpeg"
     />
-
     <div class="home-content container">
       <!-- 欢迎横幅 -->
       <div class="welcome-banner animate__animated animate__fadeInUp">

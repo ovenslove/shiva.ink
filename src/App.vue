@@ -84,6 +84,7 @@
     <el-footer class="footer">
       <div class="footer-content container">
         <p>© 2026 Shiva.ink - Crafted with ❤️ for a lovely girl</p>
+        <p class="version-info">Version 1.0.0</p>
       </div>
     </el-footer>
 

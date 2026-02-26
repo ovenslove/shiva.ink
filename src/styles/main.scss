@@ -12,6 +12,10 @@ html, body {
   line-height: 1.6;
   scrollbar-gutter: stable; // 预留滚动条空间，防止宽度抖动
   overflow-x: hidden; // 禁止横向溢出
+  
+  // 针对 iOS 设备的滚动优化
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .cute-card {
@@ -20,6 +24,7 @@ html, body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
+  will-change: transform; // 提示浏览器提前进行图层优化
 
   &:hover {
     transform: translateY(-5px);

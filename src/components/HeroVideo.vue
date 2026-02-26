@@ -1,27 +1,28 @@
 <template>
   <div class="hero-video-container">
     <!-- 静态背景图降级 & 视频封面 -->
-    <div 
-      v-if="!videoLoaded || !isVideoPlaying" 
-      class="video-fallback"
-      :style="{ backgroundImage: `url(${poster})` }"
-    ></div>
+    <transition name="fade">
+      <div 
+        v-if="!videoStarted" 
+        class="video-fallback"
+        :style="{ backgroundImage: `url(${currentPoster})` }"
+      ></div>
+    </transition>
 
     <!-- 视频背景 -->
     <video
       ref="videoRef"
       class="bg-video"
-      :poster="poster"
+      :poster="currentPoster"
       autoplay
       muted
       loop
       playsinline
       crossorigin="anonymous"
-      @canplay="onCanPlay"
-      @playing="isVideoPlaying = true"
+      @playing="onPlaying"
       @pause="isVideoPlaying = false"
     >
-      <source :src="src" type="video/mp4" />
+      <source v-if="currentSrc" :src="currentSrc" />
       您的浏览器不支持 HTML5 视频播放。
     </video>
 
@@ -56,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
 import { VideoPlay, VideoPause, ArrowDown } from '@element-plus/icons-vue'
 
 /**
@@ -65,17 +66,47 @@ import { VideoPlay, VideoPause, ArrowDown } from '@element-plus/icons-vue'
  */
 
 interface Props {
-  src: string
-  poster?: string
+  landscapeSrc: string
+  portraitSrc: string
+  landscapePoster?: string
+  portraitPoster?: string
 }
 
 const props = defineProps<Props>()
 const videoRef = ref<HTMLVideoElement | null>(null)
-const videoLoaded = ref(false)
 const isVideoPlaying = ref(false)
+const videoStarted = ref(false)
+const isPortrait = ref(false)
 
-const onCanPlay = () => {
-  videoLoaded.value = true
+const currentSrc = computed(() => {
+  return isPortrait.value ? props.portraitSrc : props.landscapeSrc
+})
+
+const currentPoster = computed(() => {
+  return isPortrait.value ? props.portraitPoster : props.landscapePoster
+})
+
+// 监听源变化，手动触发视频重新加载
+watch(currentSrc, () => {
+  videoStarted.value = false
+  if (videoRef.value) {
+    videoRef.value.load()
+    videoRef.value.play().catch(error => {
+      console.log("Autoplay on switch prevented:", error)
+    })
+  }
+})
+
+const onPlaying = () => {
+  isVideoPlaying.value = true
+  // 延迟一小会儿隐藏封面，确保视频已经渲染出第一帧，防止黑屏
+  setTimeout(() => {
+    videoStarted.value = true
+  }, 100)
+}
+
+const checkOrientation = () => {
+  isPortrait.value = window.innerHeight > window.innerWidth
 }
 
 const togglePlay = () => {
@@ -88,6 +119,9 @@ const togglePlay = () => {
 }
 
 onMounted(() => {
+  checkOrientation()
+  window.addEventListener('resize', checkOrientation)
+
   // 处理 iOS/Android 自动播放策略
   if (videoRef.value) {
     videoRef.value.play().catch(error => {
@@ -95,6 +129,10 @@ onMounted(() => {
       isVideoPlaying.value = false
     })
   }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkOrientation)
 })
 </script>
 
@@ -106,7 +144,7 @@ onMounted(() => {
   width: 100%;
   height: calc(100vh - var(--el-header-height));
   overflow: hidden;
-  background-color: #000;
+  background-color: transparent; // 移除背景色，防止闪烁
 }
 
 .bg-video {
@@ -120,6 +158,7 @@ onMounted(() => {
   transform: translate(-50%, -50%);
   object-fit: cover;
   z-index: 1;
+  background-color: transparent;
 }
 
 .video-fallback {
@@ -131,7 +170,18 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   z-index: 2;
+  transition: opacity 1s ease; // 延长过渡时间，使切换更自然
+}
+
+// 渐变过渡动画
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.8s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .video-overlay {

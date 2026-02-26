@@ -1,0 +1,30 @@
+{
+  "header": "# CHANGELOG - Shiva.ink\n\n所有显著的版本变更都将记录在此文件中。\n",
+  "types": [
+    { "type": "feat", "section": "✨ 新特性 / Features" },
+    { "type": "fix", "section": "🐛 问题修复 / Bug Fixes" },
+    { "type": "perf", "section": "⚡️ 性能优化 / Performance" },
+    { "type": "revert", "section": "⏪️ 撤销 / Reverts" },
+    { "type": "docs", "section": "📝 文档 / Documentation" },
+    { "type": "style", "section": "💄 样式 / Styles" },
+    { "type": "chore", "section": "🚀 其他任务 / Chores" },
+    { "type": "refactor", "section": "♻️ 重构 / Refactor" },
+    { "type": "test", "section": "✅ 测试 / Tests" },
+    { "type": "build", "section": "📦️ 构建系统 / Build System" },
+    { "type": "ci", "section": "👷 持续集成 / CI" }
+  ],
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    },
+    {
+      "filename": "public/version.json",
+      "type": "json"
+    }
+  ],
+  "commitUrlFormat": "https://github.com/{{owner}}/{{repository}}/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://github.com/{{owner}}/{{repository}}/issues/{{id}}",
+  "userUrlFormat": "https://github.com/{{user}}"
+}
