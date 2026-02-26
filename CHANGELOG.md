@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.3](https://github.com/ovenslove/shiva.ink/compare/v1.0.2...v1.0.3) (2026-02-26)
+
+
+### 🐛 问题修复 / Bug Fixes
+
+* 优化移动端滚动交互并调整全局特效组件位置 ([2cde93e](https://github.com/ovenslove/shiva.ink/commit/2cde93e088e89e56a20fafeed1d76f62d74fb65c))
+
 ### [1.0.2](https://github.com/ovenslove/shiva.ink/compare/v1.0.1...v1.0.2) (2026-02-26)
 
 
