@@ -126,7 +126,7 @@ onUnmounted(() => {
 @use "./styles/variables.scss" as *;
 
 :root { 
-  --el-header-height: 70px;
+  --el-header-height: 60px;
   --el-header-height-scrolled: 60px;
 }
 
