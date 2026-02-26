@@ -17,6 +17,7 @@ html, body {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   touch-action: pan-y; // 明确指定垂直方向滚动，防止双击缩放或其他干扰
+  width: 100%;
 }
 
 .cute-card {
