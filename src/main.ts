@@ -34,3 +34,38 @@ app.use(VueLazyload, {
 })
 
 app.mount('#app')
+
+/**
+ * 禁用页面缩放 (针对移动端及 iOS 优化)
+ */
+// 阻止双指缩放手势 (iOS Safari)
+document.addEventListener('gesturestart', (e) => {
+  e.preventDefault()
+})
+
+// 阻止双击缩放 (iOS Safari)
+let lastTouchEnd = 0
+document.addEventListener('touchend', (e) => {
+  const now = Date.now()
+  if (now - lastTouchEnd <= 300) {
+    e.preventDefault()
+  }
+  lastTouchEnd = now
+}, false)
+
+// 阻止鼠标滚轮缩放 (Ctrl + Scroll)
+document.addEventListener('wheel', (e) => {
+  if (e.ctrlKey) {
+    e.preventDefault()
+  }
+}, { passive: false })
+
+// 阻止键盘快捷键缩放 (Ctrl/Cmd + +/-/0)
+document.addEventListener('keydown', (e) => {
+  if (
+    (e.ctrlKey || e.metaKey) && 
+    (e.key === '=' || e.key === '-' || e.key === '0' || e.key === '+')
+  ) {
+    e.preventDefault()
+  }
+})
