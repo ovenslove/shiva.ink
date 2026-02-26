@@ -2,6 +2,25 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.7](https://github.com/ovenslove/shiva.ink/compare/v1.0.6...v1.0.7) (2026-02-26)
+
+
+### 🐛 问题修复 / Bug Fixes
+
+* 禁用移动端页面缩放以提升用户体验 ([396fe90](https://github.com/ovenslove/shiva.ink/commit/396fe90226bae3be906c31ddd8c7f10ad0499eb5))
+
+
+### 📝 文档 / Documentation
+
+* 更新README文档，补充防缩放特性与自动化发布说明 ([dc8583b](https://github.com/ovenslove/shiva.ink/commit/dc8583bae33fe75146ba8ce2108dd261edd36382))
+
+
+### 👷 持续集成 / CI
+
+* **auto-release:** 在发布流程中添加git pull --rebase ([3a87867](https://github.com/ovenslove/shiva.ink/commit/3a8786706dbf494fd7ecd0c151307c9b14a46b86))
+* **release:** 优化自动发布工作流以防止无限循环 ([d9acd15](https://github.com/ovenslove/shiva.ink/commit/d9acd15c26d9000b62b3358736926603be1b58c6))
+* 调整自动发布流程中拉取与发布的顺序 ([462ed26](https://github.com/ovenslove/shiva.ink/commit/462ed2644fef10db56709db6ce30023ae65ac3b5))
+
 ### [1.0.6](https://github.com/ovenslove/shiva.ink/compare/v1.0.5...v1.0.6) (2026-02-26)
 
 
