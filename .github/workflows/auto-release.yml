@@ -74,15 +74,24 @@ jobs:
           RELEASE_TYPE: ${{ steps.release_type.outputs.type }}
         run: |
           echo "Executing release for type: $RELEASE_TYPE"
+          
           # 仅在 master 分支推送时真正打标签，PR 阶段仅更新文件但不打标签以供预览（可选）
           if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/master" ]; then
-            git pull origin master --rebase
+            # 先执行 release 更新版本号和 changelog (这会在本地产生未提交的更改)
             npm run release -- --release-as $RELEASE_TYPE
+            
+            # 在推送前尝试拉取远程最新代码。由于 npm run release 已经创建了 commit，
+            # 这里的 pull --rebase 会将我们的 release commit 移到远程提交之后。
+            git pull origin master --rebase
+            
             git push --follow-tags origin master
           else
             # 在 PR 阶段，我们只更新 CHANGELOG 和版本号到当前分支，不打标签
-            git pull origin ${{ github.event.pull_request.head.ref }} --rebase
             npm run release -- --release-as $RELEASE_TYPE --skip.tag
+            
+            # 同样在 PR 分支拉取远程更改
+            git pull origin ${{ github.event.pull_request.head.ref }} --rebase
+            
             git add .
             git commit -m "chore(release): update version and changelog [skip ci]"
             git push origin HEAD:${{ github.event.pull_request.head.ref }}
