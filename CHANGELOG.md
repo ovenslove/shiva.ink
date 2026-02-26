@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.4](https://github.com/ovenslove/shiva.ink/compare/v1.0.3...v1.0.4) (2026-02-26)
+
+
+### 🐛 问题修复 / Bug Fixes
+
+* 移除全局overflow-x隐藏以修复横向滚动问题 ([74fd8c4](https://github.com/ovenslove/shiva.ink/commit/74fd8c40b3dd4e0d03216a20d47f2b04fd682680))
+
 ### [1.0.3](https://github.com/ovenslove/shiva.ink/compare/v1.0.2...v1.0.3) (2026-02-26)
 
 
