@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.2](https://github.com/ovenslove/shiva.ink/compare/v1.0.1...v1.0.2) (2026-02-26)
+
+
+### ✨ 新特性 / Features
+
+* 实现版本管理、响应式视频及滚动优化 ([fa4a032](https://github.com/ovenslove/shiva.ink/commit/fa4a032c962716c0309efc0896780ae241141c1b))
+
 ### [1.0.1](https://github.com/ovenslove/shiva.ink/compare/v0.0.0...v1.0.1) (2026-02-26)
 
 ## 0.0.0 (2026-02-26)
