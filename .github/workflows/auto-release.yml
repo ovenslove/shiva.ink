@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - master
+    # 排除 CHANGELOG.md 和 package.json 的变动，防止无限循环
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'package.json'
+      - 'public/version.json'
   pull_request:
     branches:
       - master
@@ -15,7 +20,7 @@ permissions:
 jobs:
   auto-release:
     runs-on: ubuntu-latest
-    # 避免由发布脚本生成的提交再次触发工作流 (匹配 standard-version 默认提交信息)
+    # 严格排除发布提交，防止循环
     if: "!contains(github.event.head_commit.message, 'chore(release):')"
     
     steps:
@@ -23,8 +28,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # 使用 GITHUB_TOKEN 进行写操作
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # 使用持久化的认证
+          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -39,20 +44,18 @@ jobs:
         id: release_type
         shell: bash
         run: |
-          # 获取当前分支名称或 PR 源分支名称
+          # 获取分支名称
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
           else
-            # 对于 push 到 master，尝试从 commit message 中提取原始分支名（针对 PR 合并后的情况）
+            # 尝试从合并 commit 信息中解析分支
             COMMIT_MSG="${{ github.event.head_commit.message }}"
-            # 提取 "from username/branch-name" 中的 branch-name
             BRANCH_NAME=$(echo "$COMMIT_MSG" | grep -oE "from [^/]+/[^ ]+" | cut -d'/' -f2 || echo "master")
           fi
           
           echo "Analyzing branch: $BRANCH_NAME"
           
-          TYPE="patch" # 默认补丁更新
-          
+          TYPE="patch"
           if [[ "$BRANCH_NAME" =~ ^feature/ ]]; then
             TYPE="minor"
           elif [[ "$BRANCH_NAME" =~ ^bugfix/ ]] || [[ "$BRANCH_NAME" =~ ^hotfix/ ]]; then
@@ -61,7 +64,6 @@ jobs:
             TYPE="major"
           fi
           
-          echo "Release type determined: $TYPE"
           echo "type=$TYPE" >> $GITHUB_OUTPUT
 
       - name: Configure Git
@@ -72,32 +74,33 @@ jobs:
       - name: Create Release
         env:
           RELEASE_TYPE: ${{ steps.release_type.outputs.type }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Executing release for type: $RELEASE_TYPE"
           
-          # 仅在 master 分支推送时真正打标签，PR 阶段仅更新文件但不打标签以供预览（可选）
           if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/master" ]; then
-            # 先执行 release 更新版本号和 changelog (这会在本地产生未提交的更改)
+            # 1. 强制清理工作区并确保是远程最新 master
+            git fetch origin master
+            git reset --hard origin/master
+            
+            # 2. 执行发布（这会修改版本号并提交 commit）
             npm run release -- --release-as $RELEASE_TYPE
             
-            # 在推送前尝试拉取远程最新代码。由于 npm run release 已经创建了 commit，
-            # 这里的 pull --rebase 会将我们的 release commit 移到远程提交之后。
-            git pull origin master --rebase
-            
-            git push --follow-tags origin master
+            # 3. 推送变更
+            # 由于我们已经重置到了 origin/master 且刚创建了唯一的 release commit，
+            # 这里直接推送即可，不需要再 pull
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" master --follow-tags
           else
-            # 在 PR 阶段，我们只更新 CHANGELOG 和版本号到当前分支，不打标签
+            # PR 阶段
+            git fetch origin ${{ github.event.pull_request.head.ref }}
+            git reset --hard origin/${{ github.event.pull_request.head.ref }}
+            
             npm run release -- --release-as $RELEASE_TYPE --skip.tag
-            
-            # 同样在 PR 分支拉取远程更改
-            git pull origin ${{ github.event.pull_request.head.ref }} --rebase
-            
-            git add .
-            git commit -m "chore(release): update version and changelog [skip ci]"
-            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:${{ github.event.pull_request.head.ref }}
           fi
 
       - name: Handle Errors
         if: failure()
         run: |
-          echo "Auto release failed. Please check the logs and ensure branch naming follows the convention (feature/*, bugfix/*, etc.)"
+          echo "Auto release failed. Common causes: branch naming or permission issues."
+          exit 1
