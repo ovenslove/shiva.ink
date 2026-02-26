@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.6](https://github.com/ovenslove/shiva.ink/compare/v1.0.5...v1.0.6) (2026-02-26)
+
+
+### 🐛 问题修复 / Bug Fixes
+
+* 修复移动端横向滚动问题 ([9b18432](https://github.com/ovenslove/shiva.ink/commit/9b18432e84d5dabdea4d8d134bc7344250a8106d))
+
 ### [1.0.5](https://github.com/ovenslove/shiva.ink/compare/v1.0.4...v1.0.5) (2026-02-26)
 
 
