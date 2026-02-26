@@ -87,10 +87,10 @@
         <p class="version-info">Version 1.0.0</p>
       </div>
     </el-footer>
-
-    <!-- 全局交互特效 -->
-    <InteractiveEffects />
   </el-container>
+
+  <!-- 全局交互特效 -->
+  <InteractiveEffects />
 </template>
 
 <script setup lang="ts">
@@ -126,7 +126,8 @@ onUnmounted(() => {
 @use "./styles/variables.scss" as *;
 
 :root { 
-  --el-header-height: 60px;
+  --el-header-height: 70px;
+  --el-header-height-scrolled: 60px;
 }
 
 .main { 
@@ -150,11 +151,11 @@ onUnmounted(() => {
   z-index: 2000; // 确保在普通内容之上
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0;
-  height: 70px;
+  height: var(--el-header-height);
   border-bottom: 1px solid transparent;
 
   &.is-scrolled {
-    height: 60px;
+    height: var(--el-header-height-scrolled);
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0 4px 20px rgba(255, 182, 193, 0.15);
     border-bottom: 1px solid rgba(255, 182, 193, 0.2);

@@ -377,11 +377,11 @@ onMounted(() => {
   initParticles()
   window.addEventListener('resize', resizeCanvas)
   
-  // 使用 capture: true 优化事件冒泡性能
-  window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true, capture: true })
-  window.addEventListener('click', handleGlobalClick, { capture: true })
-  window.addEventListener('touchmove', handleGlobalTouchMove, { passive: true, capture: true })
-  window.addEventListener('touchstart', handleGlobalTouchStart, { passive: true, capture: true })
+  // 使用 passive: true 优化滚动性能，移除 capture 以避免干扰原生滚动识别
+  window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true })
+  window.addEventListener('click', handleGlobalClick)
+  window.addEventListener('touchmove', handleGlobalTouchMove, { passive: true })
+  window.addEventListener('touchstart', handleGlobalTouchStart, { passive: true })
   
   // 降级策略：检测设备性能
   const isLowEnd = (navigator as any).deviceMemory && (navigator as any).deviceMemory <= 4
@@ -399,10 +399,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', resizeCanvas)
-  window.removeEventListener('mousemove', handleGlobalMouseMove, { capture: true })
-  window.removeEventListener('click', handleGlobalClick, { capture: true })
-  window.removeEventListener('touchmove', handleGlobalTouchMove, { capture: true })
-  window.removeEventListener('touchstart', handleGlobalTouchStart, { capture: true })
+  window.removeEventListener('mousemove', handleGlobalMouseMove)
+  window.removeEventListener('click', handleGlobalClick)
+  window.removeEventListener('touchmove', handleGlobalTouchMove)
+  window.removeEventListener('touchstart', handleGlobalTouchStart)
   window.removeEventListener('deviceorientation', handleOrientation)
 })
 
@@ -424,7 +424,6 @@ watch(() => settings.enableAnimations, (val) => {
   height: 100vh;
   pointer-events: none; // 关键：允许点击穿透到下方元素
   z-index: 1000; // 调低 z-index，使其位于 Element Plus 覆盖层 (默认 2000+) 之下
-  overflow: hidden;
   
   &.is-disabled {
     display: none;
