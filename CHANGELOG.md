@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.11](https://github.com/ovenslove/shiva.ink/compare/v1.0.10...v1.0.11) (2026-02-27)
+
+
+### 📝 文档 / Documentation
+
+* 统一添加文件头注释并更新开源协议 ([e54e160](https://github.com/ovenslove/shiva.ink/commit/e54e1602f194dea8235bf28ad95153a9dcaae84d))
+
 ### [1.0.10](https://github.com/ovenslove/shiva.ink/compare/v1.0.9...v1.0.10) (2026-02-27)
 
 
