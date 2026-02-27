@@ -1,3 +1,10 @@
+<!--
+  @Author: ovenslove (1905997838@qq.com)
+  @Project: shiva.ink
+  @License: CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International)
+  @Copyright: Copyright (c) 2025 ovenslove. All rights reserved.
+-->
+
 <template>
   <el-container class="layout-container">
     <el-header class="header" :class="{ 'is-scrolled': isScrolled }">

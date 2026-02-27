@@ -1,12 +1,8 @@
 /*
- * @Author: ovenslove 1905997838@qq.com
- * @Date: 2026-02-25 14:38:34
- * @LastEditors: ovenslove 1905997838@qq.com
- * @LastEditTime: 2026-02-26 13:35:44
- * @FilePath: /shiva.ink/src/store/index.ts
- * @Description: 
- * 
- * Copyright (c) 2026 by Yatsen, All Rights Reserved. 
+ * @Author: ovenslove (1905997838@qq.com)
+ * @Project: shiva.ink
+ * @License: CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International)
+ * @Copyright: Copyright (c) 2025 ovenslove. All rights reserved.
  */
 import { defineStore } from 'pinia'
 

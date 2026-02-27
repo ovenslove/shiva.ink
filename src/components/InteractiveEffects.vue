@@ -1,3 +1,10 @@
+<!--
+  @Author: ovenslove (1905997838@qq.com)
+  @Project: shiva.ink
+  @License: CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International)
+  @Copyright: Copyright (c) 2025 ovenslove. All rights reserved.
+-->
+
 <template>
   <div class="interactive-effects" :class="{ 'is-disabled': !settings.enableAnimations }">
     <!-- 粒子绘制画布 -->

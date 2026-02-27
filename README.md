@@ -12,6 +12,9 @@
 
 Shiva.ink 是一个基于 Vue 3 + TypeScript + Vite 构建的个人博客/作品展示网站。它拥有现代化的 UI 设计、丝滑的交互体验以及针对移动端和桌面端深度优化的响应式布局。
 
+> [!IMPORTANT]
+> **非商业用途限制**：本项目采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) 协议开源。**严禁任何形式的商业用途**（包括但不限于：作为付费模板销售、集成到收费产品中、通过该项目直接获利等）。
+
 ## 🌟 核心特性
 
 - **🎬 全屏视频 Hero 区域**：
@@ -96,6 +99,16 @@ npm run preview
     ```bash
     git push --follow-tags origin master
     ```
+
+## 📄 开源协议
+
+本项目采用 [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/) 协议授权。
+
+**主要限制说明：**
+- **署名 (Attribution)**：您必须给出适当的署名，提供指向本许可协议的链接，并说明是否对原始作品作了修改。
+- **非商业性使用 (NonCommercial)**：您不得将本作品用于商业目的。
+
+详情请参阅项目根目录下的 [LICENSE](LICENSE) 文件。
 
 ### 更新日志 (CHANGELOG)
 每次运行发布脚本时，系统会自动生成/更新 `CHANGELOG.md` 文件，详细记录每个版本的功能变更、问题修复和优化内容。
