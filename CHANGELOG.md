@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.10](https://github.com/ovenslove/shiva.ink/compare/v1.0.9...v1.0.10) (2026-02-27)
+
+
+### 🚀 其他任务 / Chores
+
+* 更新网站图标并添加logo图片资源 ([f11785f](https://github.com/ovenslove/shiva.ink/commit/f11785fa7de08cad70e1e15ad1bbde8a866cc395))
+
 ### [1.0.9](https://github.com/ovenslove/shiva.ink/compare/v1.0.8...v1.0.9) (2026-02-27)
 
 
