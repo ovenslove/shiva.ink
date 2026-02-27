@@ -16,44 +16,8 @@
       </div>
     </div>
 
-    <div class="gallery-grid" v-viewer="{ toolbar: true }">
-      <el-row :gutter="20">
-        <el-col
-          v-for="album in filteredAlbums"
-          :key="album.id"
-          :xs="24"
-          :sm="12"
-          :md="8"
-          :lg="6"
-          class="gallery-item animate__animated animate__zoomIn"
-        >
-          <el-card class="album-card cute-card" :body-style="{ padding: '0px' }">
-            <div class="image-wrapper">
-              <el-image
-                v-lazy="album.cover"
-                :src="album.cover"
-                class="album-image"
-                fit="cover"
-                :preview-src-list="[album.cover]"
-              />
-              <div class="image-overlay">
-                <el-icon><ZoomIn /></el-icon>
-              </div>
-            </div>
-            <div class="album-info">
-              <h3 class="album-title">{{ album.title }}</h3>
-              <div class="album-meta">
-                <span class="date">{{ album.date }}</span>
-                <div class="tags">
-                  <el-tag v-for="tag in album.tags" :key="tag" size="small" effect="plain" round>
-                    {{ tag }}
-                  </el-tag>
-                </div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
+    <div class="gallery-container animate__animated animate__fadeIn">
+      <PhotoGallery :images="displayImages" />
     </div>
 
     <el-empty v-if="filteredAlbums.length === 0" description="没有找到相关的相册哦 ✨" />
@@ -62,25 +26,38 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { Search, ZoomIn } from '@element-plus/icons-vue'
+import { Search } from '@element-plus/icons-vue'
 import { useMediaStore } from '../store'
+import PhotoGallery from '../components/PhotoGallery.vue'
 
 /**
- * 相册组件
- * @description 展示所有相册，支持搜索、标签筛选及 Lightbox 预览
+ * 相册视图
+ * @description 展示所有相册，集成 PhotoGallery 组件
  */
 
 const mediaStore = useMediaStore()
 const searchQuery = ref('')
 const selectedTag = ref('')
 
+// 将 Album 数据转换为 PhotoGallery 需要的格式
+const displayImages = computed(() => {
+  return mediaStore.albums
+    .filter(album => {
+      const matchesSearch = album.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+                            album.tags.some(t => t.toLowerCase().includes(searchQuery.value.toLowerCase()))
+      const matchesTag = !selectedTag.value || album.tags.includes(selectedTag.value)
+      return matchesSearch && matchesTag
+    })
+    .map(album => ({
+      url: album.cover,
+      title: album.title,
+      date: album.date
+    }))
+})
+
 const filteredAlbums = computed(() => {
-  return mediaStore.albums.filter(album => {
-    const matchesSearch = album.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                          album.tags.some(t => t.toLowerCase().includes(searchQuery.value.toLowerCase()))
-    const matchesTag = !selectedTag.value || album.tags.includes(selectedTag.value)
-    return matchesSearch && matchesTag
-  })
+  // 用于空状态判断
+  return displayImages.value
 })
 </script>
 
