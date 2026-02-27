@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.9](https://github.com/ovenslove/shiva.ink/compare/v1.0.8...v1.0.9) (2026-02-27)
+
+
+### 💄 样式 / Styles
+
+* **HeroVideo:** 添加底部渐变遮罩层并调整叠加层样式 ([bb86010](https://github.com/ovenslove/shiva.ink/commit/bb86010741f4cca5dff57fea173115a987641719))
+
 ### [1.0.8](https://github.com/ovenslove/shiva.ink/compare/v1.0.7...v1.0.8) (2026-02-27)
 
 
