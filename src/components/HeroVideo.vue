@@ -29,6 +29,9 @@
     <!-- 柔和遮罩层，提升文字可读性 -->
     <div class="video-overlay"></div>
 
+    <!-- 底部渐变遮罩层，实现与内容区域的平滑过渡 -->
+    <div class="video-bottom-mask"></div>
+
     <!-- 视频控制按钮 (可访问性) -->
     <div class="video-controls">
       <el-button 
@@ -192,11 +195,27 @@ onUnmounted(() => {
   height: 100%;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.1) 50%,
-    rgba(255, 182, 193, 0.2) 100%
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0) 60%,
+    rgba(0, 0, 0, 0.1) 100%
   );
   z-index: 3;
+}
+
+.video-bottom-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px; // 渐变区域高度
+  background: linear-gradient(
+    to bottom,
+    rgba($color-bg, 0) 0%,
+    rgba($color-bg, 0.8) 70%,
+    $color-bg 100%
+  );
+  z-index: 4;
 }
 
 .hero-content {
@@ -204,7 +223,7 @@ onUnmounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 4;
+  z-index: 10; // 确保文字在所有遮罩之上
   text-align: center;
   color: #fff;
   width: 90%;
