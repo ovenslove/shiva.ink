@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.8](https://github.com/ovenslove/shiva.ink/compare/v1.0.7...v1.0.8) (2026-02-27)
+
+
+### ✨ 新特性 / Features
+
+* **gallery:** 实现自定义图片查看器组件并重构相册视图 ([3bf12db](https://github.com/ovenslove/shiva.ink/commit/3bf12dba8c327688f097ca98e3a478395709ba19))
+
 ### [1.0.7](https://github.com/ovenslove/shiva.ink/compare/v1.0.6...v1.0.7) (2026-02-26)
 
 
