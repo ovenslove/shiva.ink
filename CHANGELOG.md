@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.12](https://github.com/ovenslove/shiva.ink/compare/v1.0.11...v1.0.12) (2026-02-27)
+
+
+### ⚡️ 性能优化 / Performance
+
+* **build:** 优化生产环境构建配置并添加Cloudflare部署文档 ([6735bb2](https://github.com/ovenslove/shiva.ink/commit/6735bb29c41401a6caf51a4bc5df7b936dac1470))
+
 ### [1.0.11](https://github.com/ovenslove/shiva.ink/compare/v1.0.10...v1.0.11) (2026-02-27)
 
 
