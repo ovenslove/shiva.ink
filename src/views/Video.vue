@@ -7,8 +7,12 @@
 
 <template>
   <div class="video-view container">
+    <el-breadcrumb separator="/" class="breadcrumb animate__animated animate__fadeIn">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>视频</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="header-section animate__animated animate__fadeIn">
-      <h2 class="section-title">我的视频</h2>
+      <h1 class="section-title">我的视频 - Shiva.ink 视频创作展示</h1>
     </div>
 
     <el-row :gutter="30">
@@ -67,6 +71,10 @@ const mediaStore = useMediaStore()
 
 .video-view {
   padding-top: 20px;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
 }
 
 .header-section {

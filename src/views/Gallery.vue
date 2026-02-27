@@ -7,8 +7,12 @@
 
 <template>
   <div class="gallery-view container">
+    <el-breadcrumb separator="/" class="breadcrumb animate__animated animate__fadeIn">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>相册</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="filter-header animate__animated animate__fadeIn">
-      <h2 class="section-title">我的相册</h2>
+      <h1 class="section-title">我的相册 - Shiva.ink 摄影作品集</h1>
       <div class="filter-controls">
         <el-input
           v-model="searchQuery"
@@ -73,6 +77,10 @@ const filteredAlbums = computed(() => {
 
 .gallery-view {
   padding-top: 20px;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
 }
 
 .filter-header {

@@ -63,6 +63,7 @@
                     v-lazy="item.cover" 
                     class="preview-img" 
                     fit="cover"
+                    :alt="item.title"
                   />
                 </div>
                 <div class="card-footer">
@@ -79,6 +80,29 @@
         </div>
       </el-col>
     </el-row>
+
+    <!-- 地理位置与联系方式 (GEO 优化) -->
+    <div class="geo-section animate__animated animate__fadeInUp">
+      <h3 class="section-title">我的坐标</h3>
+      <div class="geo-container">
+        <div class="map-wrapper">
+          <!-- 这里可以嵌入实际的地图，目前使用占位图展示 -->
+          <div class="map-placeholder">
+            <el-icon :size="40"><Location /></el-icon>
+            <p>中国 · 广东 · 深圳</p>
+          </div>
+        </div>
+        <div class="contact-info">
+          <p class="location-desc">
+            Shiva 目前常驻于<strong>中国深圳</strong>，专注于探索城市角落的美好与自然光影。
+          </p>
+          <div class="local-stats">
+            <el-tag effect="plain" round># 深圳摄影师</el-tag>
+            <el-tag effect="plain" round># 广东视觉创作</el-tag>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -86,6 +110,7 @@
 <script setup lang="ts">
 import HeroVideo from '../components/HeroVideo.vue'
 import { useUserStore, useMediaStore } from '../store'
+import { Location } from '@element-plus/icons-vue'
 
 /**
  * 首页组件
@@ -234,5 +259,65 @@ const mediaStore = useMediaStore()
 .view-more {
   text-align: center;
   margin-top: 30px;
+}
+
+.geo-section {
+  margin-top: 60px;
+  padding-bottom: 40px;
+
+  .geo-container {
+    display: flex;
+    gap: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(255, 182, 193, 0.1);
+    align-items: center;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+
+  .map-wrapper {
+    flex: 1;
+    height: 200px;
+    background: #fdf5f6;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #ffb6c1;
+
+    .map-placeholder {
+      text-align: center;
+      color: #ffb6c1;
+      
+      p {
+        margin-top: 10px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .contact-info {
+    flex: 1;
+
+    .location-desc {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #666;
+      margin-bottom: 20px;
+
+      strong {
+        color: #ffb6c1;
+      }
+    }
+
+    .local-stats {
+      display: flex;
+      gap: 10px;
+    }
+  }
 }
 </style>

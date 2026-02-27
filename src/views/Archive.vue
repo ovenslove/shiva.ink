@@ -7,8 +7,12 @@
 
 <template>
   <div class="archive-view container">
+    <el-breadcrumb separator="/" class="breadcrumb animate__animated animate__fadeIn">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>归档</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="header-section animate__animated animate__fadeIn">
-      <h2 class="section-title">时间轴归档</h2>
+      <h1 class="section-title">时间轴归档 - 记录 Shiva 的美好瞬间</h1>
       <p class="subtitle">记录每一个美好的瞬间 ✨</p>
     </div>
 
@@ -38,7 +42,7 @@
                 </div>
               </div>
               <div class="thumbnail">
-                <el-image v-lazy="item.cover" fit="cover" class="thumb-img" />
+                <el-image v-lazy="item.cover" fit="cover" class="thumb-img" :alt="item.title" />
               </div>
             </div>
           </el-card>
@@ -96,6 +100,10 @@ const navigateTo = (item: ArchiveItem) => {
 
 .archive-view {
   padding-top: 20px;
+}
+
+.breadcrumb {
+  margin-bottom: 20px;
 }
 
 .header-section {

@@ -2,7 +2,7 @@
  * @Author: ovenslove 1905997838@qq.com
  * @Date: 2026-02-25 14:37:12
  * @LastEditors: ovenslove 1905997838@qq.com
- * @LastEditTime: 2026-02-27 15:52:35
+ * @LastEditTime: 2026-02-27 17:34:39
  * @FilePath: /shiva.ink/vite.config.ts
  * @Description: 
  * 
@@ -22,4 +22,31 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   base: '/', // 自定义域名使用根路径
   plugins: [vue()],
+  build: {
+    // 启用压缩
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true, // 生产环境移除 console
+        drop_debugger: true
+      }
+    },
+    // 资源分块策略，优化缓存命中率
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['vue', 'vue-router', 'pinia', 'element-plus'],
+          'icons': ['@element-plus/icons-vue']
+        },
+        // 资源文件名添加 hash，方便 CDN 长期缓存
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+      }
+    },
+    // 小于 4kb 的资源内联
+    assetsInlineLimit: 4096,
+    // 启用 sourcemap（可选，生产环境建议关闭以减小包体积）
+    sourcemap: false
+  }
 })
