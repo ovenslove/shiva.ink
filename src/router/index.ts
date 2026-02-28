@@ -61,6 +61,22 @@ const routes: Array<RouteRecordRaw> = [
       description: '按时间顺序回顾 Shiva.ink 的所有摄影与视频作品，记录成长足迹。',
       keywords: '归档, 时间轴, 往期作品, 历史记录'
     }
+  },
+  {
+    path: '/articles',
+    name: 'Articles',
+    component: () => import('../views/Articles.vue'),
+    meta: { 
+      title: '文章 - Shiva.ink 见闻与感悟',
+      description: '阅读 Shiva 的生活感悟、学习心得与日常分享。',
+      keywords: '博客, 文章, 生活感悟, 学习心得'
+    }
+  },
+  {
+    path: '/article/:id',
+    name: 'ArticleDetail',
+    component: () => import('../views/ArticleDetail.vue'),
+    meta: { title: '文章详情 - Shiva.ink' }
   }
 ]
 

@@ -24,6 +24,7 @@
           <el-menu-item index="/">首页</el-menu-item>
           <el-menu-item index="/gallery">相册</el-menu-item>
           <el-menu-item index="/video">视频</el-menu-item>
+          <el-menu-item index="/articles">文章</el-menu-item>
           <el-menu-item index="/archive">归档</el-menu-item>
         </el-menu>
 
@@ -68,6 +69,10 @@
               <el-icon><VideoCamera /></el-icon>
               <span>视频</span>
             </el-menu-item>
+            <el-menu-item index="/articles">
+              <el-icon><Document /></el-icon>
+              <span>文章</span>
+            </el-menu-item>
             <el-menu-item index="/archive">
               <el-icon><Collection /></el-icon>
               <span>归档</span>
@@ -101,9 +106,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { HomeFilled, Picture, VideoCamera, Collection, Menu } from '@element-plus/icons-vue'
+import { 
+  HomeFilled, 
+  Picture, 
+  VideoCamera, 
+  Collection, 
+  Menu,
+  Document
+} from '@element-plus/icons-vue'
 import InteractiveEffects from './components/InteractiveEffects.vue'
 
 /**

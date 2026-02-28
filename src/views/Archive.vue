@@ -31,8 +31,9 @@
               <div class="info">
                 <div class="type-tag">
                   <el-icon v-if="item.type === 'album'"><Picture /></el-icon>
-                  <el-icon v-else><VideoCamera /></el-icon>
-                  {{ item.type === 'album' ? '相册' : '视频' }}
+                  <el-icon v-else-if="item.type === 'video'"><VideoCamera /></el-icon>
+                  <el-icon v-else><Document /></el-icon>
+                  {{ item.type === 'album' ? '相册' : (item.type === 'video' ? '视频' : '文章') }}
                 </div>
                 <h4 class="title">{{ item.title }}</h4>
                 <div class="tags">
@@ -58,7 +59,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMediaStore } from '../store'
-import { Picture, VideoCamera } from '@element-plus/icons-vue'
+import { Picture, VideoCamera, Document } from '@element-plus/icons-vue'
 
 /**
  * 归档组件
@@ -69,10 +70,10 @@ const router = useRouter()
 const mediaStore = useMediaStore()
 
 interface ArchiveItem {
-  id: number
+  id: string | number
   title: string
   date: string
-  type: 'album' | 'video'
+  type: 'album' | 'video' | 'article'
   cover: string
   tags: string[]
 }
@@ -80,8 +81,14 @@ interface ArchiveItem {
 const sortedItems = computed<ArchiveItem[]>(() => {
   const albums: ArchiveItem[] = mediaStore.albums.map(a => ({ ...a, type: 'album' as const }))
   const videos: ArchiveItem[] = mediaStore.videos.map(v => ({ ...v, type: 'video' as const }))
+  const articles: ArchiveItem[] = mediaStore.articles.map(a => ({ 
+    ...a, 
+    type: 'article' as const, 
+    date: a.publishTime, 
+    cover: a.images[0] 
+  }))
   
-  return [...albums, ...videos].sort((a, b) => 
+  return [...albums, ...videos, ...articles].sort((a, b) => 
     new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 })
@@ -89,8 +96,10 @@ const sortedItems = computed<ArchiveItem[]>(() => {
 const navigateTo = (item: ArchiveItem) => {
   if (item.type === 'album') {
     router.push('/gallery')
-  } else {
+  } else if (item.type === 'video') {
     router.push('/video')
+  } else {
+    router.push(`/article/${item.id}`)
   }
 }
 </script>
