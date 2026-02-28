@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.13](https://github.com/ovenslove/shiva.ink/compare/v1.0.12...v1.0.13) (2026-02-27)
+
+
+### 🚀 其他任务 / Chores
+
+* **deps:** 移除 terser 并改用 esbuild 进行压缩 ([cd7f2ea](https://github.com/ovenslove/shiva.ink/commit/cd7f2ea44dd33a1781967ec0d56ebcae87300323))
+
 ### [1.0.12](https://github.com/ovenslove/shiva.ink/compare/v1.0.11...v1.0.12) (2026-02-27)
 
 
