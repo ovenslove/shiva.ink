@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.14](https://github.com/ovenslove/shiva.ink/compare/v1.0.13...v1.0.14) (2026-02-28)
+
+
+### ✨ 新特性 / Features
+
+* **cms:** 新增文章内容管理系统及前端路由 ([515aca9](https://github.com/ovenslove/shiva.ink/commit/515aca9dc5e441040103c444f050811ac3aab250))
+
 ### [1.0.13](https://github.com/ovenslove/shiva.ink/compare/v1.0.12...v1.0.13) (2026-02-27)
 
 
