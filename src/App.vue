@@ -209,7 +209,7 @@ onUnmounted(() => {
   }
 
   .nav-menu {
-    border-bottom: none;
+    border-bottom: none !important;
     background: transparent;
     
     .el-menu-item {
