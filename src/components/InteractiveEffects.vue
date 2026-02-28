@@ -430,7 +430,7 @@ watch(() => settings.enableAnimations, (val) => {
   width: 100vw;
   height: 100vh;
   pointer-events: none; // 关键：允许点击穿透到下方元素
-  z-index: 32767; // 设置为最高优先级，确保在所有 UI（如大图查看器、侧边栏）之上显示
+  z-index: 1500; // 降低层级，确保在 Element Plus 弹窗（如预览器、对话框，通常为 2000+）之下，但在页面内容之上
   overflow: hidden;
   
   &.is-disabled {

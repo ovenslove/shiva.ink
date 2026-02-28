@@ -29,8 +29,7 @@
             lazy 
             fit="cover" 
             class="article-img"
-            :preview-src-list="article.images"
-            :initial-index="index"
+            @click="openGallery(index)"
           />
         </div>
 
@@ -91,10 +90,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useMediaStore, useUserStore, Article } from '../store'
 import { User, Calendar, View, Star, Share } from '@element-plus/icons-vue'
+import PhotoSwipeLightbox from 'photoswipe/lightbox'
+import 'photoswipe/style.css'
 
 const route = useRoute()
 const router = useRouter()
@@ -103,6 +104,7 @@ const userStore = useUserStore()
 
 const article = ref<Article | null>(null)
 const isLiked = ref(false)
+let lightbox: PhotoSwipeLightbox | null = null
 
 const formattedContent = computed(() => {
   if (!article.value) return ''
@@ -115,6 +117,124 @@ const relatedArticles = computed(() => {
   return mediaStore.articles
     .filter(a => a.id !== article.value?.id && a.categoryIds.some(id => article.value?.categoryIds.includes(id)))
     .slice(0, 5)
+})
+
+const parseImageDimensions = (url: string) => {
+  // 尝试从 Picsum URL 解析宽高 (e.g. .../800/600)
+  const matches = url.match(/\/(\d+)\/(\d+)$/)
+  if (matches) {
+    return { w: parseInt(matches[1]), h: parseInt(matches[2]) }
+  }
+  // 默认值
+  return { w: 1200, h: 800 }
+}
+
+const openGallery = (index: number) => {
+  if (!article.value || !article.value.images) return
+
+  const dataSource = article.value.images.map(img => {
+    const dims = parseImageDimensions(img)
+    return {
+      src: img,
+      width: dims.w,
+      height: dims.h
+    }
+  })
+
+  lightbox = new PhotoSwipeLightbox({
+    dataSource,
+    pswpModule: () => import('photoswipe'),
+    index,
+    bgOpacity: 0.9,
+    showHideAnimationType: 'zoom',
+    zoom: true,
+    
+    // 自定义缩放范围
+    maxZoomLevel: 3, 
+    secondaryZoomLevel: 2,
+    
+    // PhotoSwipe 5 API 差异：使用 width/height 而不是 w/h
+    // 并且通过 wheelToZoom 来控制滚轮缩放
+    wheelToZoom: true,
+    
+    // 禁止拖动：PhotoSwipe 默认行为是 scale=1 时拖动切换，scale>1 拖动平移。
+    // 这符合“禁止随意拖动，仅允许缩放”的要求（即非放大状态下不能随意拖动位置，只能切换）
+  })
+  
+  // 注册底部缩略图 UI
+  lightbox.on('uiRegister', () => {
+    lightbox!.pswp!.ui!.registerElement({
+      name: 'custom-thumbnails',
+      order: 9,
+      isButton: false,
+      tagName: 'div',
+      className: 'pswp__thumbnails-container',
+      html: '',
+      onInit: (el, pswp) => {
+        const images = article.value?.images || []
+        const thumbnailsHtml = images.map((img, idx) => `
+          <div class="pswp__thumbnail-item" data-index="${idx}" role="button" aria-label="查看第 ${idx + 1} 张图片">
+            <img src="${img}" loading="lazy" />
+          </div>
+        `).join('')
+        
+        el.innerHTML = `<div class="pswp__thumbnails-wrapper">${thumbnailsHtml}</div>`
+        
+        const wrapper = el.querySelector('.pswp__thumbnails-wrapper')
+        wrapper?.addEventListener('click', (e) => {
+          const target = (e.target as HTMLElement).closest('.pswp__thumbnail-item')
+          if (target) {
+            const index = parseInt(target.getAttribute('data-index') || '0')
+            pswp.goTo(index)
+          }
+        })
+        
+        const updateActiveThumbnail = () => {
+          const currIndex = pswp.currIndex
+          const items = el.querySelectorAll('.pswp__thumbnail-item')
+          const wrapper = el.querySelector('.pswp__thumbnails-wrapper')
+          
+          if (!wrapper) return
+
+          items.forEach((item, idx) => {
+            if (idx === currIndex) {
+              item.classList.add('is-active')
+              
+              // 使用手动计算 scrollLeft 替代 scrollIntoView，避免触发全局布局偏移
+              const itemEl = item as HTMLElement
+              const wrapperEl = wrapper as HTMLElement
+              const wrapperRect = wrapperEl.getBoundingClientRect()
+              const itemRect = itemEl.getBoundingClientRect()
+              
+              // 计算目标滚动位置：使当前项居中
+              const targetScrollLeft = wrapperEl.scrollLeft + (itemRect.left - wrapperRect.left) - (wrapperRect.width / 2) + (itemRect.width / 2)
+              
+              wrapperEl.scrollTo({
+                left: targetScrollLeft,
+                behavior: 'smooth'
+              })
+            } else {
+              item.classList.remove('is-active')
+            }
+          })
+        }
+        
+        pswp.on('change', updateActiveThumbnail)
+        // 初始高亮
+        pswp.on('firstUpdate', updateActiveThumbnail)
+      }
+    })
+  })
+  
+  lightbox.init()
+  lightbox.loadAndOpen(index)
+}
+
+onUnmounted(() => {
+  if (lightbox) {
+    lightbox.destroy()
+    lightbox = null
+  }
 })
 
 const loadArticle = () => {
@@ -211,13 +331,36 @@ watch(() => route.params.id, () => {
 
 .article-images {
   margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  
   .article-img {
     width: 100%;
+    aspect-ratio: 16 / 9;
     border-radius: 12px;
     cursor: zoom-in;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    
+    // 确保 el-image 内部 img 填满
+    :deep(.el-image__inner) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  // 针对只有一张图片的特殊处理：放大展示
+  &:has(> :nth-last-child(1):first-child) {
+    grid-template-columns: 1fr;
+    .article-img {
+      aspect-ratio: 21 / 9;
+    }
   }
 }
 
@@ -309,5 +452,78 @@ watch(() => route.params.id, () => {
 .cute-card {
   border-radius: 20px;
   border: 1px solid rgba(255, 182, 193, 0.2);
+}
+</style>
+
+<style lang="scss">
+/* PhotoSwipe 自定义缩略图样式 (全局) */
+/* 调整 top-bar 到底部 */
+.pswp__top-bar {
+  top: auto !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  padding-bottom: env(safe-area-inset-bottom); /* 适配全面屏底部安全区 */
+}
+
+/* 调整缩略图栏位置到顶部 */
+.pswp__thumbnails-container {
+  position: absolute;
+  bottom: 65px !important;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 1500;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* 适配缩略图栏位置，避免遮挡顶部内容 */
+.pswp__thumbnails-wrapper {
+  margin-top: env(safe-area-inset-top);
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 8px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  max-width: 90%;
+  scrollbar-width: none;
+}
+
+.pswp__thumbnails-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.pswp__thumbnail-item {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.pswp__thumbnail-item.is-active {
+  opacity: 1;
+  border-color: #ffb6c1;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.pswp__thumbnail-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 </style>

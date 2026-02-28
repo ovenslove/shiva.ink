@@ -15,11 +15,16 @@
  * @Copyright: Copyright (c) 2025 ovenslove. All rights reserved.
  */
 
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vite.dev/config/
 export default defineConfig({
+  test: {
+    globals: true,
+    environment: 'jsdom',
+  },
   base: '/', // 自定义域名使用根路径
   plugins: [vue()],
   build: {

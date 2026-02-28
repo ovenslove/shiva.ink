@@ -222,6 +222,9 @@ export const useSettingsStore = defineStore('settings', {
   actions: {
     toggleAnimations() {
       this.enableAnimations = !this.enableAnimations
+    },
+    setDensity(val: number) {
+      this.animationDensity = val
     }
   }
 })
