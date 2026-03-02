@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.15](https://github.com/ovenslove/shiva.ink/compare/v1.0.14...v1.0.15) (2026-02-28)
+
+
+### ✨ 新特性 / Features
+
+* **ArticleDetail:** 使用 PhotoSwipe 替换图片预览并添加单元测试 ([85894d3](https://github.com/ovenslove/shiva.ink/commit/85894d37247310cfb327f037a219ebb91093bb9c))
+
 ### [1.0.14](https://github.com/ovenslove/shiva.ink/compare/v1.0.13...v1.0.14) (2026-02-28)
 
 
