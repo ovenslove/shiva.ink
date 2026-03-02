@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.16](https://github.com/ovenslove/shiva.ink/compare/v1.0.15...v1.0.16) (2026-03-02)
+
+
+### 🐛 问题修复 / Bug Fixes
+
+* 修复导航菜单边框样式被覆盖的问题 ([722070a](https://github.com/ovenslove/shiva.ink/commit/722070a48d475952a91b2b0a97a4fc35cb7fd931))
+
 ### [1.0.15](https://github.com/ovenslove/shiva.ink/compare/v1.0.14...v1.0.15) (2026-02-28)
 
 
