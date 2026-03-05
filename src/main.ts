@@ -6,6 +6,11 @@
  */
 
 import { createApp } from 'vue'
+import { Buffer } from 'buffer'
+
+// 注入 Buffer polyfill 以兼容 gray-matter 等库
+window.Buffer = window.Buffer || Buffer
+
 import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'

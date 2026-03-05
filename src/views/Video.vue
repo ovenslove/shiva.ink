@@ -39,7 +39,7 @@
           <div class="video-info">
             <h3 class="video-title">{{ video.title }}</h3>
             <div class="video-meta">
-              <span class="date">{{ video.date }}</span>
+              <span class="date">{{ dayjs(video.date).format('YYYY-MM-DD') }}</span>
               <div class="tags">
                 <el-tag v-for="tag in video.tags" :key="tag" size="small" effect="plain" round>
                   {{ tag }}
@@ -56,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import dayjs from 'dayjs'
 import { useMediaStore } from '../store'
 
 /**

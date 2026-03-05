@@ -52,14 +52,17 @@
             <el-timeline-item
               v-for="item in mediaStore.albums.slice(0, 3)"
               :key="item.id"
-              :timestamp="item.date"
+              :timestamp="dayjs(item.date).format('YYYY-MM-DD')"
               placement="top"
               color="#ffb6c1"
             >
-              <el-card class="timeline-card cute-card">
+              <el-card 
+                class="timeline-card cute-card clickable-card" 
+                @click="goToAlbum(item)"
+              >
                 <h4>{{ item.title }}</h4>
                 <div class="album-preview">
-                  <el-image 
+                  <img 
                     v-lazy="item.cover" 
                     class="preview-img" 
                     fit="cover"
@@ -89,12 +92,12 @@
           <!-- 这里可以嵌入实际的地图，目前使用占位图展示 -->
           <div class="map-placeholder">
             <el-icon :size="40"><Location /></el-icon>
-            <p>中国 · 广东 · 深圳</p>
+            <p>中国 · 广东 · 广州</p>
           </div>
         </div>
         <div class="contact-info">
           <p class="location-desc">
-            Shiva 目前常驻于<strong>中国深圳</strong>，专注于探索城市角落的美好与自然光影。
+            Shiva 目前常驻于<strong>中国广州</strong>，专注于探索城市角落的美好与自然光影。
           </p>
           <div class="local-stats">
             <el-tag effect="plain" round># 深圳摄影师</el-tag>
@@ -108,6 +111,8 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+import dayjs from 'dayjs'
 import HeroVideo from '../components/HeroVideo.vue'
 import { useUserStore, useMediaStore } from '../store'
 import { Location } from '@element-plus/icons-vue'
@@ -117,8 +122,16 @@ import { Location } from '@element-plus/icons-vue'
  * @description 展示个人基本信息、心情状态及最新动态
  */
 
+const router = useRouter()
 const userStore = useUserStore()
 const mediaStore = useMediaStore()
+
+const goToAlbum = (album: any) => {
+  router.push({
+    path: '/gallery',
+    query: { search: album.title }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -216,6 +229,12 @@ const mediaStore = useMediaStore()
   }
 }
 
+.content-section {
+  :deep(.el-timeline-item__timestamp.is-top) {
+    margin-bottom: 16px;
+  }
+}
+
 .section-title {
   font-size: 20px;
   margin-bottom: 20px;
@@ -237,6 +256,23 @@ const mediaStore = useMediaStore()
 }
 
 .timeline-card {
+  margin-bottom: 20px;
+
+  &.clickable-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3);
+      border-color: $color-primary;
+    }
+
+    &:active {
+      transform: translateY(-2px);
+    }
+  }
+
   h4 {
     margin: 0 0 10px 0;
   }
@@ -282,6 +318,7 @@ const mediaStore = useMediaStore()
   .map-wrapper {
     flex: 1;
     height: 200px;
+    width: 100%;
     background: #fdf5f6;
     border-radius: 16px;
     display: flex;
@@ -290,6 +327,7 @@ const mediaStore = useMediaStore()
     border: 1px dashed #ffb6c1;
 
     .map-placeholder {
+      width: 100%;
       text-align: center;
       color: #ffb6c1;
       

@@ -6,8 +6,9 @@
 -->
 
 <template>
-  <el-container class="layout-container">
-    <el-header class="header" :class="{ 'is-scrolled': isScrolled }">
+  <el-config-provider :locale="zhCn">
+    <el-container class="layout-container">
+      <el-header class="header" :class="{ 'is-scrolled': isScrolled }">
       <div class="nav-content container">
         <div class="logo" @click="$router.push('/')">
           <span class="logo-text">Shiva.ink</span>
@@ -24,7 +25,7 @@
           <el-menu-item index="/">首页</el-menu-item>
           <el-menu-item index="/gallery">相册</el-menu-item>
           <el-menu-item index="/video">视频</el-menu-item>
-          <el-menu-item index="/articles">文章</el-menu-item>
+          <el-menu-item index="/column">专栏</el-menu-item>
           <el-menu-item index="/archive">归档</el-menu-item>
         </el-menu>
 
@@ -69,12 +70,12 @@
               <el-icon><VideoCamera /></el-icon>
               <span>视频</span>
             </el-menu-item>
-            <el-menu-item index="/articles">
-              <el-icon><Document /></el-icon>
-              <span>文章</span>
+            <el-menu-item index="/column">
+              <el-icon><Collection /></el-icon>
+              <span>专栏</span>
             </el-menu-item>
             <el-menu-item index="/archive">
-              <el-icon><Collection /></el-icon>
+              <el-icon><Menu /></el-icon>
               <span>归档</span>
             </el-menu-item>
           </el-menu>
@@ -101,20 +102,23 @@
     </el-footer>
   </el-container>
 
-  <!-- 全局交互特效 -->
   <InteractiveEffects />
+  <BackToTop />
+</el-config-provider>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { 
   HomeFilled, 
   Picture, 
   VideoCamera, 
   Collection, 
   Menu,
-  Document
+  Document,
+  EditPen
 } from '@element-plus/icons-vue'
 import InteractiveEffects from './components/InteractiveEffects.vue'
 
@@ -128,8 +132,13 @@ const activeMenu = computed(() => route.path)
 const mobileMenuVisible = ref(false)
 const isScrolled = ref(false)
 
+let scrollTimer: number | null = null
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 20
+  if (scrollTimer) return
+  scrollTimer = requestAnimationFrame(() => {
+    isScrolled.value = window.scrollY > 50
+    scrollTimer = null
+  })
 }
 
 onMounted(() => {
@@ -138,6 +147,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  if (scrollTimer) cancelAnimationFrame(scrollTimer)
 })
 </script>
 
@@ -167,11 +177,16 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
-  z-index: 2000; // 确保在普通内容之上
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2000;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              background-color 0.3s ease, 
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
   padding: 0;
   height: var(--el-header-height);
   border-bottom: 1px solid transparent;
+  will-change: height, background-color, box-shadow;
+  -webkit-tap-highlight-color: transparent;
 
   &.is-scrolled {
     height: var(--el-header-height-scrolled);
@@ -192,6 +207,13 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     gap: 8px;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: transform 0.2s ease;
+
+    &:active {
+      transform: scale(0.95);
+    }
 
     .logo-text {
       font-size: 28px;
@@ -224,6 +246,18 @@ onUnmounted(() => {
   .mobile-menu-trigger {
     display: flex;
     align-items: center;
+    padding: 10px; // 增加热区
+    margin-right: -10px; // 抵消 padding 对布局的影响
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
+    .el-button {
+      padding: 0;
+      &:active {
+        opacity: 0.6;
+      }
+    }
   }
 }
 

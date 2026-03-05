@@ -28,7 +28,24 @@
     </div>
 
     <div class="gallery-container animate__animated animate__fadeIn">
-      <PhotoGallery :images="displayImages" />
+      <PhotoSkeleton v-if="mediaStore.isLoading" :count="8" />
+      <template v-else>
+        <PhotoGallery :images="displayImages" />
+        
+        <!-- 分页控件 -->
+        <div v-if="filteredAlbums.length > 0" class="pagination-wrapper">
+          <el-pagination
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            :page-sizes="[8, 12, 24, 48]"
+            layout="prev, pager, next"
+            :total="filteredAlbums.length"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            background
+          />
+        </div>
+      </template>
     </div>
 
     <el-empty v-if="filteredAlbums.length === 0" description="没有找到相关的相册哦 ✨" />
@@ -36,39 +53,105 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import dayjs from 'dayjs'
 import { Search } from '@element-plus/icons-vue'
 import { useMediaStore } from '../store'
 import PhotoGallery from '../components/PhotoGallery.vue'
+import PhotoSkeleton from '../components/PhotoSkeleton.vue'
 
 /**
  * 相册视图
  * @description 展示所有相册，集成 PhotoGallery 组件
  */
 
+const route = useRoute()
+const router = useRouter()
 const mediaStore = useMediaStore()
+
 const searchQuery = ref('')
 const selectedTag = ref('')
+const currentPage = ref(1)
+const pageSize = ref(12)
 
-// 将 Album 数据转换为 PhotoGallery 需要的格式
+// 监听路由查询参数的变化，确保在页面已挂载时点击首页动态也能触发搜索
+watch(() => route.query.search, (newSearch) => {
+  if (newSearch) {
+    searchQuery.value = newSearch as string
+    currentPage.value = 1 // 搜索时重置页码
+  }
+}, { immediate: true })
+
+// 监听路由分页参数
+watch(() => route.query.page, (newPage) => {
+  if (newPage) {
+    currentPage.value = parseInt(newPage as string)
+  }
+}, { immediate: true })
+
+onMounted(async () => {
+  // 初始加载时根据 URL 设置分页
+  if (route.query.page) currentPage.value = parseInt(route.query.page as string)
+  if (route.query.pageSize) pageSize.value = parseInt(route.query.pageSize as string)
+
+  // 模拟加载效果以展示新设计的骨架屏
+  mediaStore.isLoading = true
+  setTimeout(() => {
+    mediaStore.isLoading = false
+  }, 1200)
+})
+
+const handleSizeChange = (val: number) => {
+  pageSize.value = val
+  currentPage.value = 1
+  updateUrl()
+}
+
+const handleCurrentChange = (val: number) => {
+  currentPage.value = val
+  updateUrl()
+  // 滚动到顶部
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const updateUrl = () => {
+  router.push({
+    query: {
+      ...route.query,
+      page: currentPage.value,
+      pageSize: pageSize.value
+    }
+  })
+}
+
+// 筛选后的所有相册
+const filteredAlbums = computed(() => {
+  return mediaStore.albums.filter(album => {
+    const matchesSearch = album.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+                          album.tags.some(t => t.toLowerCase().includes(searchQuery.value.toLowerCase()))
+    const matchesTag = !selectedTag.value || album.tags.includes(selectedTag.value)
+    return matchesSearch && matchesTag
+  })
+})
+
+// 将筛选并分页后的数据转换为 PhotoGallery 需要的格式
 const displayImages = computed(() => {
-  return mediaStore.albums
-    .filter(album => {
-      const matchesSearch = album.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                            album.tags.some(t => t.toLowerCase().includes(searchQuery.value.toLowerCase()))
-      const matchesTag = !selectedTag.value || album.tags.includes(selectedTag.value)
-      return matchesSearch && matchesTag
-    })
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  return filteredAlbums.value
+    .slice(start, end)
     .map(album => ({
       url: album.cover,
       title: album.title,
-      date: album.date
+      date: dayjs(album.date).format('YYYY-MM-DD')
     }))
 })
 
-const filteredAlbums = computed(() => {
-  // 用于空状态判断
-  return displayImages.value
+// 监听搜索词和标签变化，重置页码
+watch([searchQuery, selectedTag], () => {
+  currentPage.value = 1
+  updateUrl()
 })
 </script>
 
@@ -112,6 +195,23 @@ const filteredAlbums = computed(() => {
 
 .gallery-grid {
   min-height: 400px;
+}
+
+.pagination-wrapper {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+
+  :deep(.el-pagination) {
+    --el-pagination-button-bg-color: #fff;
+    --el-pagination-hover-color: #{$color-primary};
+    
+    .el-pager li.is-active {
+      background-color: $color-primary !important;
+      color: #fff !important;
+    }
+  }
 }
 
 .album-card {

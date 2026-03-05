@@ -27,6 +27,10 @@ export default defineConfig({
   },
   base: '/', // 自定义域名使用根路径
   plugins: [vue()],
+  define: {
+    // 注入 global 以支持某些依赖 Node.js globals 的库 (如 gray-matter)
+    global: 'globalThis',
+  },
   build: {
     // 启用压缩，默认使用 esbuild，比 terser 更快且通常更稳定
     minify: 'esbuild',

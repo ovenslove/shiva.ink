@@ -43,7 +43,7 @@
                 </div>
               </div>
               <div class="thumbnail">
-                <el-image v-lazy="item.cover" fit="cover" class="thumb-img" :alt="item.title" />
+                <img v-lazy="item.cover" fit="cover" class="thumb-img" :alt="item.title" />
               </div>
             </div>
           </el-card>
@@ -56,9 +56,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import dayjs from 'dayjs'
 import { useMediaStore } from '../store'
+import { useContentStore } from '../store/content'
 import { Picture, VideoCamera, Document } from '@element-plus/icons-vue'
 
 /**
@@ -68,28 +70,43 @@ import { Picture, VideoCamera, Document } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const mediaStore = useMediaStore()
+const contentStore = useContentStore()
+
+onMounted(async () => {
+  if (contentStore.items.length === 0) {
+    await contentStore.initContent()
+  }
+})
 
 interface ArchiveItem {
   id: string | number
   title: string
   date: string
-  type: 'album' | 'video' | 'article'
+  type: 'album' | 'video' | 'article' | 'blog'
   cover: string
   tags: string[]
 }
 
 const sortedItems = computed<ArchiveItem[]>(() => {
-  const albums: ArchiveItem[] = mediaStore.albums.map(a => ({ ...a, type: 'album' as const }))
-  const videos: ArchiveItem[] = mediaStore.videos.map(v => ({ ...v, type: 'video' as const }))
-  const articles: ArchiveItem[] = mediaStore.articles.map(a => ({ 
+  const albums: ArchiveItem[] = mediaStore.albums.map(a => ({ 
     ...a, 
-    type: 'article' as const, 
-    date: a.publishTime, 
-    cover: a.images[0] 
+    type: 'album' as const,
+    date: dayjs(a.date).format('YYYY-MM-DD')
+  }))
+  const videos: ArchiveItem[] = mediaStore.videos.map(v => ({ 
+    ...v, 
+    type: 'video' as const,
+    date: dayjs(v.date).format('YYYY-MM-DD')
+  }))
+  const articles: ArchiveItem[] = contentStore.items.map(a => ({ 
+    ...a, 
+    type: a.type as 'article' | 'blog', 
+    date: dayjs(a.date).format('YYYY-MM-DD'), 
+    cover: a.cover || 'https://picsum.photos/400/300?blur=2' // 提供模糊兜底图
   }))
   
   return [...albums, ...videos, ...articles].sort((a, b) => 
-    new Date(b.date).getTime() - new Date(a.date).getTime()
+    dayjs(b.date).unix() - dayjs(a.date).unix()
   )
 })
 
@@ -98,6 +115,8 @@ const navigateTo = (item: ArchiveItem) => {
     router.push('/gallery')
   } else if (item.type === 'video') {
     router.push('/video')
+  } else if (item.type === 'blog') {
+    router.push(`/blog/${encodeURIComponent(item.id as string)}`)
   } else {
     router.push(`/article/${item.id}`)
   }
@@ -132,6 +151,10 @@ const navigateTo = (item: ArchiveItem) => {
 .timeline-container {
   max-width: 800px;
   margin: 0 auto;
+
+  :deep(.el-timeline-item__timestamp.is-top) {
+    margin-bottom: 16px;
+  }
 }
 
 .archive-card {

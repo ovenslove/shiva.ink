@@ -358,7 +358,12 @@ const handleGlobalMouseMove = (e: MouseEvent) => {
 }
 
 const handleGlobalClick = (e: MouseEvent) => {
-  explode(e.clientX, e.clientY)
+  // 检查是否点击在交互元素上，避免在导航或操作表单时干扰
+  const target = e.target as HTMLElement
+  const isInteractive = target.closest('button, a, .el-button, .el-menu-item, input, .logo')
+  if (!isInteractive) {
+    explode(e.clientX, e.clientY)
+  }
 }
 
 const handleGlobalTouchMove = (e: TouchEvent) => {
@@ -376,7 +381,11 @@ const handleGlobalTouchMove = (e: TouchEvent) => {
 
 const handleGlobalTouchStart = (e: TouchEvent) => {
   if (e.touches.length > 0) {
-    explode(e.touches[0].clientX, e.touches[0].clientY)
+    const target = e.target as HTMLElement
+    const isInteractive = target.closest('button, a, .el-button, .el-menu-item, input, .logo')
+    if (!isInteractive) {
+      explode(e.touches[0].clientX, e.touches[0].clientY)
+    }
   }
 }
 

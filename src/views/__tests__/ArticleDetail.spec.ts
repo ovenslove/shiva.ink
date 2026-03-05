@@ -15,75 +15,56 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import ArticleDetail from '../ArticleDetail.vue'
-
-// Mock PhotoSwipe
-vi.mock('photoswipe/lightbox', () => {
-  return {
-    default: class MockLightbox {
-      options: any
-      constructor(options: any) {
-        this.options = options
-      }
-      init() {}
-      loadAndOpen() {}
-      destroy() {}
-    }
-  }
-})
+import ContentDetail from '../ContentDetail.vue'
 
 // Mock vue-router
 vi.mock('vue-router', () => ({
   useRoute: vi.fn(() => ({
     params: {
       id: '1'
-    }
+    },
+    path: '/article/1'
   })),
   useRouter: vi.fn(() => ({
-    push: vi.fn()
+    push: vi.fn(),
+    back: vi.fn()
   }))
 }))
 
-describe('ArticleDetail.vue', () => {
-  it('should initialize PhotoSwipe with correct options', async () => {
-    const wrapper = mount(ArticleDetail, {
+describe('ContentDetail.vue', () => {
+  it('should render content correctly from store', async () => {
+    const wrapper = mount(ContentDetail, {
       global: {
         plugins: [createTestingPinia({
           createSpy: vi.fn,
           initialState: {
-            media: {
-              articles: [
+            content: {
+              items: [
                 {
                   id: '1',
+                  type: 'article',
                   title: 'Test Article',
                   content: 'Test Content',
+                  summary: 'Test Summary',
                   images: ['https://picsum.photos/id/10/800/600'],
+                  cover: 'https://picsum.photos/id/10/800/600',
                   author: 'Test Author',
-                  publishTime: '2023-01-01',
-                  readCount: 100,
-                  likeCount: 10,
+                  date: '2025-01-01',
+                  categories: ['life'],
                   tags: ['test'],
-                  categoryIds: ['1']
+                  stats: { views: 100, likes: 10, comments: 5 },
+                  status: 'published'
                 }
-              ]
-            },
-            user: {
-              avatar: 'avatar.png',
-              signature: 'signature'
+              ],
+              isLoading: false
             }
           }
         })],
-        stubs: ['el-image', 'el-icon', 'el-breadcrumb', 'el-breadcrumb-item', 'el-button', 'el-avatar', 'el-card', 'el-tag', 'el-empty']
+        stubs: ['el-image', 'el-icon', 'el-breadcrumb', 'el-breadcrumb-item', 'el-button', 'el-tag', 'el-empty']
       }
     })
 
-    // 触发图片点击
-    // wrapper.vm.openGallery(0)
-    
-    // 验证 Lightbox 实例是否创建，且 maxZoomLevel 为 3
-    // expect(MockLightbox).toHaveBeenCalledWith(expect.objectContaining({
-    //   maxZoomLevel: 3,
-    //   zoom: true
-    // }))
+    expect(wrapper.find('.detail-title').text()).toBe('Test Article')
+    expect(wrapper.find('.author').text()).toContain('Test Author')
   })
 })

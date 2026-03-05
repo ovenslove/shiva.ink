@@ -28,7 +28,9 @@
                 v-lazy="image.url" 
                 :alt="image.title" 
                 class="thumbnail-img"
+                @load="handleLoad(index)"
               />
+              <div class="blur-placeholder" v-if="!loadedIndices.has(index)"></div>
               <div class="thumbnail-overlay">
                 <el-icon><ZoomIn /></el-icon>
               </div>
@@ -137,6 +139,12 @@ interface GalleryImage {
 const props = defineProps<{
   images: GalleryImage[]
 }>()
+
+const loadedIndices = ref(new Set<number>())
+
+const handleLoad = (index: number) => {
+  loadedIndices.value.add(index)
+}
 
 const viewerVisible = ref(false)
 const currentIndex = ref(0)
@@ -288,6 +296,29 @@ watch(viewerVisible, (visible) => {
       height: 100%;
       object-fit: cover;
       transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+      position: relative;
+    }
+
+    .blur-placeholder {
+      position: absolute;
+      inset: 0;
+      background: #f5f5f5;
+      backdrop-filter: blur(10px);
+      z-index: 1;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.4) 50%,
+          transparent 100%
+        );
+        animation: shimmer 1.5s infinite linear;
+      }
     }
     
     .thumbnail-overlay {
@@ -500,6 +531,11 @@ watch(viewerVisible, (visible) => {
 
 .slide-prev-enter-from { opacity: 0; transform: translateX(-50px); }
 .slide-prev-leave-to { opacity: 0; transform: translateX(50px); }
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
 
 // 响应式调整
 @media (max-width: 768px) {
