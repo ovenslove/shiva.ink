@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.18](https://github.com/ovenslove/shiva.ink/compare/v1.0.17...v1.0.18) (2026-03-05)
+
+
+### ✨ 新特性 / Features
+
+* **content:** 实现统一内容管理系统并集成 Markdown 博客 ([1aaa980](https://github.com/ovenslove/shiva.ink/commit/1aaa980048ac28aeb55cd0e176d72f12de1bfdbd))
+
 ### [1.0.17](https://github.com/ovenslove/shiva.ink/compare/v1.0.16...v1.0.17) (2026-03-03)
 
 
