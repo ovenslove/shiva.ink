@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.17](https://github.com/ovenslove/shiva.ink/compare/v1.0.16...v1.0.17) (2026-03-03)
+
+
+### 📝 文档 / Documentation
+
+* 新增项目规则、专业技能体系和团队开发规范文档 ([c64b166](https://github.com/ovenslove/shiva.ink/commit/c64b1663d5e63b15f42d65d9ee0b592f60678c3e))
+
 ### [1.0.16](https://github.com/ovenslove/shiva.ink/compare/v1.0.15...v1.0.16) (2026-03-02)
 
 
