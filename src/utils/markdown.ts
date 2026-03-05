@@ -1,4 +1,14 @@
 /*
+ * @Author: ovenslove 1905997838@qq.com
+ * @Date: 2026-03-05 12:16:17
+ * @LastEditors: ovenslove 1905997838@qq.com
+ * @LastEditTime: 2026-03-05 18:16:00
+ * @FilePath: /shiva.ink/src/utils/markdown.ts
+ * @Description: 
+ * 
+ * Copyright (c) 2026 by Yatsen, All Rights Reserved. 
+ */
+/*
  * @Author: ovenslove (1905997838@qq.com)
  * @Project: shiva.ink
  * @Description: Markdown 解析与元数据提取工具
@@ -10,18 +20,21 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 import { ContentItem } from '../types/content'
 
-// 初始化 markdown-it
+// 初始化 markdown-it，支持 GFM 语法
 const md: MarkdownIt = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
+  breaks: true, // 支持 GFM 换行
   highlight: (str: string, lang: string): string => {
     if (lang && hljs.getLanguage(lang)) {
       try {
         return `<pre class="hljs"><code>${
           hljs.highlight(str, { language: lang, ignoreIllegals: true }).value
         }</code></pre>`
-      } catch (__) {}
+      } catch (e) {
+        console.error('Highlight.js error:', e)
+      }
     }
     return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`
   }

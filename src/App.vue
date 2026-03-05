@@ -25,7 +25,7 @@
           <el-menu-item index="/">首页</el-menu-item>
           <el-menu-item index="/gallery">相册</el-menu-item>
           <el-menu-item index="/video">视频</el-menu-item>
-          <el-menu-item index="/column">专栏</el-menu-item>
+          <el-menu-item index="/article">专栏</el-menu-item>
           <el-menu-item index="/archive">归档</el-menu-item>
         </el-menu>
 
@@ -70,7 +70,7 @@
               <el-icon><VideoCamera /></el-icon>
               <span>视频</span>
             </el-menu-item>
-            <el-menu-item index="/column">
+            <el-menu-item index="/article">
               <el-icon><Collection /></el-icon>
               <span>专栏</span>
             </el-menu-item>
@@ -128,7 +128,14 @@ import InteractiveEffects from './components/InteractiveEffects.vue'
  */
 
 const route = useRoute()
-const activeMenu = computed(() => route.path)
+const activeMenu = computed(() => {
+  const path = route.path
+  // 处理专栏及其子路径的激活状态（前缀匹配）
+  if (path === '/article' || path.startsWith('/article/')) {
+    return '/article'
+  }
+  return path
+})
 const mobileMenuVisible = ref(false)
 const isScrolled = ref(false)
 

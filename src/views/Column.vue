@@ -282,7 +282,12 @@ const handleSearch = () => {
 const handleTypeChange = (val: string) => {
   selectedType.value = val
   currentPage.value = 1
-  router.replace({ query: { ...route.query, type: val || undefined } })
+  // 切换类型时，重置分类和标签筛选，避免筛选冲突
+  selectedCategoryId.value = ''
+  selectedTag.value = ''
+  localStorage.removeItem('shiva_column_last_category')
+  localStorage.removeItem('shiva_column_last_tag')
+  router.replace({ query: { ...route.query, type: val || undefined, category: undefined, tag: undefined } })
 }
 
 const handleCategoryClick = (node: any) => {
@@ -310,12 +315,8 @@ const handleSizeChange = (size: number) => {
 }
 
 const goToDetail = (item: ContentItem) => {
-  // 保持原有链接逻辑：blog 使用编码路径，article 使用 id
-  if (item.type === 'blog') {
-    router.push(`/blog/${encodeURIComponent(item.id)}`)
-  } else {
-    router.push(`/article/${item.id}`)
-  }
+  // 统一使用 /article/:id 路径
+  router.push(`/article/${encodeURIComponent(item.id)}`)
 }
 
 onMounted(async () => {
@@ -334,7 +335,12 @@ onMounted(async () => {
 // 监听路由变化，同步类型过滤
 watch(() => route.query.type, (newType) => {
   selectedType.value = (newType as string) || ''
-})
+  currentPage.value = 1 // 切换类型时重置页码
+  
+  // 如果 URL 变了但没有 category/tag，同步清除内部状态
+  if (!route.query.category) selectedCategoryId.value = ''
+  if (!route.query.tag) selectedTag.value = ''
+}, { immediate: true })
 </script>
 
 <style lang="scss" scoped>

@@ -101,11 +101,9 @@ const contentStore = useContentStore()
 
 const isLiked = ref(false)
 
-// 获取 ID 并解码 (如果是 blog)
+// 获取 ID
 const itemId = computed(() => {
-  const id = route.params.id as string
-  // 如果当前路由是 /blog/:id，说明需要解码
-  return route.path.startsWith('/blog') ? decodeURIComponent(id) : id
+  return route.params.id as string
 })
 
 const item = computed(() => contentStore.getContentById(itemId.value))
@@ -320,18 +318,17 @@ watch(() => route.params.id, async () => {
     
     pre {
       background-color: #282c34;
-      color: #abb2bf;
-      padding: 24px;
+      padding: 0;
       border-radius: 16px;
       margin: 30px 0;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
       font-size: 15px;
       overflow-x: auto;
       
-      code {
-        background: transparent;
-        padding: 0;
-        color: inherit;
+      code.hljs {
+        background-color: transparent;
+        padding: 24px;
+        color: #abb2bf;
         font-family: 'Fira Code', 'Consolas', monospace;
       }
     }

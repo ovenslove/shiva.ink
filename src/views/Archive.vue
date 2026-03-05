@@ -115,10 +115,9 @@ const navigateTo = (item: ArchiveItem) => {
     router.push('/gallery')
   } else if (item.type === 'video') {
     router.push('/video')
-  } else if (item.type === 'blog') {
-    router.push(`/blog/${encodeURIComponent(item.id as string)}`)
   } else {
-    router.push(`/article/${item.id}`)
+    // 统一使用 /article/:id 路径，包括 blog 和 article
+    router.push(`/article/${encodeURIComponent(item.id as string)}`)
   }
 }
 </script>

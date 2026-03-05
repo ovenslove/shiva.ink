@@ -2,7 +2,7 @@
  * @Author: ovenslove 1905997838@qq.com
  * @Date: 2026-02-25 14:38:26
  * @LastEditors: ovenslove 1905997838@qq.com
- * @LastEditTime: 2026-02-27 17:27:53
+ * @LastEditTime: 2026-03-05 18:12:46
  * @FilePath: /shiva.ink/src/router/index.ts
  * @Description: 
  * 
@@ -63,48 +63,20 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/articles',
-    name: 'Articles',
-    component: () => import('../views/Column.vue'),
-    meta: { 
-      title: '文章 - Shiva.ink 见闻与感悟',
-      description: '阅读 Shiva 的生活感悟、学习心得与日常分享。',
-      keywords: '博客, 文章, 生活感悟, 学习心得'
-    },
-    beforeEnter: (to) => { to.query.type = 'article' }
-  },
-  {
-    path: '/article/:id',
-    name: 'ArticleDetail',
-    component: () => import('../views/ContentDetail.vue'),
-    meta: { title: '文章详情 - Shiva.ink' }
-  },
-  {
-    path: '/blog',
-    name: 'Blog',
-    component: () => import('../views/Column.vue'),
-    meta: { 
-      title: '博客 - Shiva.ink 自动化 Markdown 系统',
-      description: '阅读基于 Markdown 自动化解析系统的本地文章。',
-      keywords: 'Markdown, 博客, 技术分享, 自动化'
-    },
-    beforeEnter: (to) => { to.query.type = 'blog' }
-  },
-  {
-    path: '/blog/:id',
-    name: 'BlogPost',
-    component: () => import('../views/ContentDetail.vue'),
-    meta: { title: '博文详情 - Shiva.ink' }
-  },
-  {
-    path: '/column',
-    name: 'Column',
+    path: '/article',
+    name: 'Article',
     component: () => import('../views/Column.vue'),
     meta: { 
       title: '专栏 - Shiva.ink 统一内容平台',
       description: 'Shiva.ink 统一内容管理与展示系统，汇聚博客、文章与生活点滴。',
       keywords: '专栏, 博客, 文章, 统一平台, 内容管理'
     }
+  },
+  {
+    path: '/article/:id',
+    name: 'ArticleDetail',
+    component: () => import('../views/ContentDetail.vue'),
+    meta: { title: '文章详情 - Shiva.ink' }
   }
 ]
 

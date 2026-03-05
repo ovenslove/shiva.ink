@@ -145,7 +145,9 @@ export const useContentStore = defineStore('content', () => {
    * 获取详情
    */
   const getContentById = (id: string) => {
-    return items.value.find(item => item.id === id)
+    // 兼容解码后的 ID 和原始 ID
+    const decodedId = decodeURIComponent(id)
+    return items.value.find(item => item.id === id || item.id === decodedId)
   }
 
   // --- Getters ---
