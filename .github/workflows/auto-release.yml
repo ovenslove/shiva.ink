@@ -48,21 +48,26 @@ jobs:
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
           else
-            # 尝试从合并 commit 信息中解析分支
+            # 尝试从合并 commit 信息中解析分支 (支持多种合并格式)
             COMMIT_MSG="${{ github.event.head_commit.message }}"
-            BRANCH_NAME=$(echo "$COMMIT_MSG" | grep -oE "from [^/]+/[^ ]+" | cut -d'/' -f2 || echo "master")
+            # 解析格式如 "Merge pull request #1 from user/feature/xxx" 或 "Merge branch 'feature/xxx' of ..."
+            BRANCH_NAME=$(echo "$COMMIT_MSG" | grep -oE "from [^/]+/.+|branch '[^']+'" | sed -E "s/from [^/]+\/|branch '//;s/'//g" || echo "master")
           fi
           
           echo "Analyzing branch: $BRANCH_NAME"
           
           TYPE="patch"
-          if [[ "$BRANCH_NAME" =~ ^feature/ ]]; then
+          # 使用通配符或前缀匹配，确保能识别 feature/ 等分支
+          if [[ "$BRANCH_NAME" == feature/* ]]; then
             TYPE="minor"
-          elif [[ "$BRANCH_NAME" =~ ^bugfix/ ]] || [[ "$BRANCH_NAME" =~ ^hotfix/ ]]; then
+          elif [[ "$BRANCH_NAME" == bugfix/* ]] || [[ "$BRANCH_NAME" == hotfix/* ]]; then
             TYPE="patch"
-          elif [[ "$BRANCH_NAME" =~ ^release/ ]]; then
+          elif [[ "$BRANCH_NAME" == release/* ]]; then
             TYPE="major"
           fi
+          
+          echo "Debug: Detected Branch Name: $BRANCH_NAME"
+          echo "Debug: Calculated Release Type: $TYPE"
           
           echo "type=$TYPE" >> $GITHUB_OUTPUT
 
@@ -102,5 +107,9 @@ jobs:
       - name: Handle Errors
         if: failure()
         run: |
-          echo "Auto release failed. Common causes: branch naming or permission issues."
+          echo "::error::Auto release failed! Possible causes:"
+          echo "1. Permission denied: Check 'Settings > Actions > General > Workflow permissions' and ensure 'Read and write permissions' is selected."
+          echo "2. Branch protection: If 'master' is protected, GITHUB_TOKEN might not have permission to push. Consider using a PAT or allowing 'github-actions[bot]'."
+          echo "3. Conflict: Someone pushed to 'master' during the workflow run. Try running the workflow again."
+          echo "4. Tag exists: The tag for this version might already exist on GitHub."
           exit 1
