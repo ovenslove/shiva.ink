@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.21](https://github.com/ovenslove/shiva.ink/compare/v1.0.20...v1.0.21) (2026-03-06)
+
+
+### 🚀 其他任务 / Chores
+
+* 添加开发工具配置和部署文档 ([f7d8998](https://github.com/ovenslove/shiva.ink/commit/f7d8998a78b32383ad44cdcf017e389e0557502f))
+
 ### [1.0.20](https://github.com/ovenslove/shiva.ink/compare/v1.0.19...v1.0.20) (2026-03-06)
 
 
