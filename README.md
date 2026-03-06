@@ -1,58 +1,111 @@
-<!--
- * @Author: ovenslove 1905997838@qq.com
- * @Date: 2026-02-25 14:37:12
- * @LastEditors: ovenslove 1905997838@qq.com
- * @LastEditTime: 2026-02-26 16:48:26
- * @FilePath: /shiva.ink/README.md
- * @Description: 
- * 
- * Copyright (c) 2026 by Yatsen, All Rights Reserved. 
--->
 # Shiva.ink ✨
 
-Shiva.ink 是一个基于 Vue 3 + TypeScript + Vite 构建的个人博客/作品展示网站。它拥有现代化的 UI 设计、丝滑的交互体验以及针对移动端和桌面端深度优化的响应式布局。
+<div align="center">
+
+![Banner](https://img.shields.io/badge/Shiva.ink-Vue%203%20+%20TypeScript%20+%20Vite-ffb6c1?style=for-the-badge&logo=vue.js)
+
+[![Stars](https://img.shields.io/github/stars/ovenslove/shiva.ink?style=flat-square&color=ffd700&logo=github)](https://github.com/ovenslove/shiva.ink/stargazers)
+[![Forks](https://img.shields.io/github/forks/ovenslove/shiva.ink?style=flat-square&color=87ceeb&logo=github)](https://github.com/ovenslove/shiva.ink/network/members)
+[![Contributors](https://img.shields.io/github/contributors/ovenslove/shiva.ink?style=flat-square&color=32cd32&logo=github)](https://github.com/ovenslove/shiva.ink/graphs/contributors)
+[![Last Commit](https://img.shields.io/github/last-commit/ovenslove/shiva.ink?style=flat-square&color=ff69b4&logo=github)](https://github.com/ovenslove/shiva.ink/commits/master)
+[![Issues](https://img.shields.io/github/issues/ovenslove/shiva.ink?style=flat-square&color=ffa500&logo=github)](https://github.com/ovenslove/shiva.ink/issues)
+[![License](https://img.shields.io/github/license/ovenslove/shiva.ink?style=flat-square&color=9370db)](https://github.com/ovenslove/shiva.ink/blob/master/LICENSE)
+
+[**🌐 在线预览 (Live Demo)**](https://shiva.ink) | [**📖 文档 (Docs)**](#-快速开始) | [**🐞 报告问题 (Report Bug)**](https://github.com/ovenslove/shiva.ink/issues)
+
+</div>
+
+---
+
+## 📖 项目简介
+
+**Shiva.ink** 是一个基于 **Vue 3** + **TypeScript** + **Vite** 构建的高颜值、现代化个人博客与作品展示平台。它不仅是一个内容展示系统，更是一个集成了自动化 Markdown 解析、多媒体沉浸式体验、以及极致移动端响应式优化的全栈式前端实践。
 
 > [!IMPORTANT]
 > **非商业用途限制**：本项目采用 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) 协议开源。**严禁任何形式的商业用途**（包括但不限于：作为付费模板销售、集成到收费产品中、通过该项目直接获利等）。
 
+---
+
+## 📊 GitHub 动态统计
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://github-readme-stats.vercel.app/api?username=ovenslove&show_icons=true&theme=rose&hide_border=true&include_all_commits=true" alt="Shiva Stats" height="180px">
+      </td>
+      <td align="center">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ovenslove&layout=compact&theme=rose&hide_border=true" alt="Top Langs" height="180px">
+      </td>
+    </tr>
+    <tr>
+      <td align="center" colspan="2">
+        <img src="https://github-readme-streak-stats.herokuapp.com/?user=ovenslove&theme=rose&hide_border=true" alt="Commit Streak" width="100%">
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
+
 ## 🌟 核心特性
 
-- **🎬 全屏视频 Hero 区域**：
-  - 支持横竖屏双视频源自动切换，完美适配各种设备。
-  - 具备加载状态缓冲、优雅淡入淡出过渡，彻底消除黑屏闪烁。
-  - 智能降级策略：在网络不佳时自动显示对应比例的静态封面图。
+- **🎬 沉浸式 Hero 区域**：
+  - 支持横竖屏双视频源自动切换，具备智能缓冲、淡入淡出过渡，彻底消除黑屏闪烁。
+  - 智能降级策略：在弱网环境下自动回退至高清静态封面图。
 
-- **🚫 极致防缩放体验**：
-  - 全方位禁用页面缩放（Viewport 限制 + JS 拦截）。
-  - 针对 iOS 深度优化，有效阻止双指缩放及双击缩放手势。
-  - 确保页面在任何设备上始终以 1:1 的原始比例稳定呈现。
+- **📝 自动化 Markdown 系统**：
+  - **GFM 支持**：深度支持 GitHub Flavored Markdown 语法，包括任务列表、表格及自动链接。
+  - **Front-matter 解析**：自动提取文章元数据（标题、日期、分类、标签）。
+  - **代码高亮**：集成 `Highlight.js`，提供极致的代码阅读体验。
 
-- **🧚 交互式爱心粒子特效**：
-  - 深度优化的鼠标/触摸移动爱心生成算法。
-  - 采用单渲染循环 (Single Animation Loop) 与对象池 (Object Pooling) 技术，确保 60FPS 的极致流畅度。
-  - 智能频率控制与概率生成，保持视觉清爽且不失灵动。
+- **🖼️ 响应式多媒体展示**：
+  - **相册 (Gallery)**：支持智能搜索、多维度标签过滤、分页加载及 `v-viewer` 大图查看。
+  - **视频 (Video)**：流畅展示个人影像作品。
 
-- **📱 响应式布局与导航**：
-  - **智能吸顶 Header**：支持滚动感应（高度收缩、背景模糊、动态阴影）。
-  - **移动端适配**：优雅的侧边抽屉菜单，专为 iOS 优化的原生滚动体验 (`-webkit-overflow-scrolling`)。
-  - **布局稳定性**：利用 `scrollbar-gutter` 解决因滚动条切换导致的页面宽度抖动。
+- **🚫 极致防缩放与适配**：
+  - 全方位禁用页面缩放，确保在 iOS 及 Android 设备上始终以 1:1 比例呈现。
+  - 针对移动端深度优化的侧边弹出式筛选器 (Drawer) 与 悬浮按钮 (FAB)。
 
-- **🖼️ 内容展示系统**：
-  - **相册 (Gallery)**：支持搜索过滤、标签分类及图片点击放大查看（v-viewer）。
-  - **视频 (Video)**：流畅展示个人视频作品。
-  - **归档 (Archive)**：基于时间轴记录每一个美好的瞬间。
+- **🧚 灵动粒子特效**：
+  - 采用对象池 (Object Pooling) 技术实现的 60FPS 爱心粒子特效，灵动且不失性能。
+
+---
 
 ## 🛠️ 技术栈
 
-- **核心框架**：Vue 3 (Composition API) + TypeScript
-- **构建工具**：Vite
-- **状态管理**：Pinia
-- **路由管理**：Vue Router (Hash 模式，完美适配 GitHub Pages)
-- **UI 组件库**：Element Plus
-- **动画/样式**：Sass, Animate.css
-- **性能优化库**：Vue Lazyload (图片懒加载), v-viewer (图片查看器)
+| 类别 | 技术 |
+| :--- | :--- |
+| **核心框架** | ![Vue](https://img.shields.io/badge/Vue-3.5+-4FC08D?style=flat-square&logo=vue.js&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-5.4+-3178C6?style=flat-square&logo=typescript&logoColor=white) |
+| **构建/构建** | ![Vite](https://img.shields.io/badge/Vite-5.2+-646CFF?style=flat-square&logo=vite&logoColor=white) ![Rollup](https://img.shields.io/badge/Rollup-Stable-EC4A3F?style=flat-square&logo=rollup.js&logoColor=white) |
+| **状态/路由** | ![Pinia](https://img.shields.io/badge/Pinia-Latest-FFD700?style=flat-square&logo=pinia&logoColor=white) ![VueRouter](https://img.shields.io/badge/VueRouter-4.4+-4FC08D?style=flat-square&logo=vue.js&logoColor=white) |
+| **UI 组件** | ![Element Plus](https://img.shields.io/badge/Element%20Plus-2.13+-409EFF?style=flat-square&logo=element-plus&logoColor=white) ![Sass](https://img.shields.io/badge/Sass-Latest-CC6699?style=flat-square&logo=sass&logoColor=white) |
+| **工具库** | ![Dayjs](https://img.shields.io/badge/Dayjs-Latest-ff69b4?style=flat-square) ![MarkdownIt](https://img.shields.io/badge/Markdown--It-GFM-blue?style=flat-square) |
 
-## 🚀 开发指南
+---
+
+## 📂 项目结构
+
+```bash
+shiva.ink/
+├── .github/workflows/   # CI/CD 自动化流水线
+├── src/
+│   ├── api/            # 接口定义与数据获取
+│   ├── assets/         # 静态资源 (图片、样式)
+│   ├── components/     # 全局复用组件
+│   ├── router/         # 路由配置 (Hash 模式)
+│   ├── store/          # Pinia 状态管理与 Mock 数据
+│   ├── types/          # TypeScript 类型定义
+│   ├── utils/          # 工具函数 (Markdown 解析等)
+│   └── views/          # 页面视图 (Gallery, Article, Video...)
+├── public/             # 公共资源
+├── articles/           # 本地 Markdown 文章源
+└── vite.config.ts      # 构建配置
+```
+
+---
+
+## 🚀 快速开始
 
 ### 安装依赖
 ```bash
@@ -69,69 +122,33 @@ npm run dev
 npm run build
 ```
 
-### 预览构建产物
-```bash
-npm run preview
-```
+---
 
-## 🔄 版本管理与发布
+## 🔄 自动化发布与 CI/CD
 
-项目采用 [Semantic Versioning (SemVer)](https://semver.org/lang/zh-CN/) 规范，并使用 `standard-version` 配合 **GitHub Actions** 实现自动化发布。
-
-### 自动化发布机制
-
-项目配置了智能 GitHub Actions 工作流 `auto-release.yml`，能够根据分支前缀自动判定发布类型：
-- `feature/*` ➔ 自动触发 **Minor** 版本升级。
-- `bugfix/*` 或 `hotfix/*` ➔ 自动触发 **Patch** 版本升级。
-- `release/*` ➔ 自动触发 **Major** 版本升级。
-
-工作流会自动处理版本递增、更新日志生成及 Git 标签推送，并内置了 `git pull --rebase` 冲突预处理机制，确保发布流程的稳健性。
-
-### 手动发布流程
-
-1.  **提交更改**：确保所有更改已提交并推送到 `master` 分支。
-2.  **运行发布脚本**：
-    - `npm run release`：自动根据 commit message 决定版本号递增类型（patch, minor, major）。
-    - `npm run release:patch`：手动发布补丁版本（如 1.0.0 -> 1.0.1）。
-    - `npm run release:minor`：手动发布次要版本（如 1.0.0 -> 1.1.0）。
-    - `npm run release:major`：手动发布主要版本（如 1.0.0 -> 2.0.0）。
-3.  **推送标签**：
-    ```bash
-    git push --follow-tags origin master
-    ```
-
-## 📄 开源协议
-
-本项目采用 [Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/) 协议授权。
-
-**主要限制说明：**
-- **署名 (Attribution)**：您必须给出适当的署名，提供指向本许可协议的链接，并说明是否对原始作品作了修改。
-- **非商业性使用 (NonCommercial)**：您不得将本作品用于商业目的。
-
-详情请参阅项目根目录下的 [LICENSE](LICENSE) 文件。
-
-### 更新日志 (CHANGELOG)
-每次运行发布脚本时，系统会自动生成/更新 `CHANGELOG.md` 文件，详细记录每个版本的功能变更、问题修复和优化内容。
-
-### 版本查询
-- **前端展示**：页面底部页脚显示当前运行版本。
-- **静态接口**：可以通过访问 `/version.json` 获取当前生产环境的最新版本号。
-
-## 📦 部署与分发
-
-项目通过 **GitHub Actions** 自动化构建并部署至 **GitHub Pages**。
-
-- **部署域名**：[shiva.ink](https://shiva.ink)
-- **部署配置**：参见 [deploy.yml](.github/workflows/deploy.yml)
-- **HTTPS**：已通过 GitHub Pages 强制开启 SSL 证书保障访问安全。
-
-## 📈 性能优化实践
-
-1. **GPU 硬件加速**：大量使用 `transform` (translate3d) 和 `opacity` 进行动画处理，并结合 `will-change` 减少回流重绘。
-2. **资源优化**：视频源采用 CDN 托管，并根据屏幕方向动态加载，减少不必要的流量消耗。
-3. **滚动优化**：为移动端添加原生滚动加速，并在全局处理布局偏移补偿。
-4. **类型安全**：全量 TypeScript 覆盖，并通过 `env.d.ts` 处理 Vue 组件类型识别。
+项目集成了高度自动化的 **GitHub Actions** 发布流程，通过 `auto-release.yml` 实现：
+- **版本自增**：根据分支前缀 (`feature/`, `bugfix/`, `release/`) 自动判定 SemVer 递增类型。
+- **自动日志**：自动生成 `CHANGELOG.md` 并推送 Git Tag。
+- **构建校验**：在发布前自动运行测试与构建检查，确保线上版本稳定性。
 
 ---
 
-Made with ❤️ by Shiva.
+## 🤝 贡献指南
+
+我们非常欢迎你的贡献！你可以通过以下方式参与：
+1. **提交 Issue**：反馈 Bug 或建议新功能。
+2. **提交 PR**：修复问题或实现功能。
+   - 请确保在提交 PR 前已运行本地测试。
+   - 遵循项目的代码规范。
+
+---
+
+## 📄 许可证
+
+本项目基于 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) 协议开源。
+
+---
+
+<div align="center">
+  <p>© 2026 Shiva.ink - Crafted with ❤️ by <a href="https://github.com/ovenslove">ovenslove</a></p>
+</div>
