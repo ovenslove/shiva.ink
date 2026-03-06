@@ -97,21 +97,23 @@ router.beforeEach((to) => {
 
   // 设置描述
   const description = to.meta.description as string
-  if (description) {
-    let metaDesc = document.querySelector('meta[name="description"]')
-    if (metaDesc) {
-      metaDesc.setAttribute('content', description)
-    }
+  let metaDescription = document.querySelector('meta[name="description"]')
+  if (!metaDescription) {
+    metaDescription = document.createElement('meta')
+    metaDescription.setAttribute('name', 'description')
+    document.head.appendChild(metaDescription)
   }
+  metaDescription.setAttribute('content', description || 'Shiva.ink - 创意摄影与视频作品集')
 
   // 设置关键词
   const keywords = to.meta.keywords as string
-  if (keywords) {
-    let metaKeywords = document.querySelector('meta[name="keywords"]')
-    if (metaKeywords) {
-      metaKeywords.setAttribute('content', keywords)
-    }
+  let metaKeywords = document.querySelector('meta[name="keywords"]')
+  if (!metaKeywords) {
+    metaKeywords = document.createElement('meta')
+    metaKeywords.setAttribute('name', 'keywords')
+    document.head.appendChild(metaKeywords)
   }
+  metaKeywords.setAttribute('content', keywords || 'Shiva.ink, 摄影, 视频, 创意作品')
 })
 
 export default router

@@ -1,0 +1,32 @@
+# Multi-service orchestration for Shiva.ink
+
+version: '3.8'
+
+services:
+  # Main Application Service (SPA)
+  shiva-ink:
+    image: shiva-ink:latest
+    container_name: shiva-ink-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro  # Optional: For dev hot-reloading (requires manual build) or checking build
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - shiva-net
+
+  # Optional: Nginx Proxy Manager or Certbot could be added here for HTTPS
+
+networks:
+  shiva-net:
+    driver: bridge

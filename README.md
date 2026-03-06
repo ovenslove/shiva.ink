@@ -32,15 +32,15 @@
   <table>
     <tr>
       <td align="center">
-        <img src="https://github-readme-stats.vercel.app/api?username=ovenslove&show_icons=true&theme=rose&hide_border=true&include_all_commits=true" alt="Shiva Stats" height="180px">
+        <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=ovenslove&show_icons=true&theme=rose&hide_border=true" alt="Shiva Stats" height="180px">
       </td>
       <td align="center">
-        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ovenslove&layout=compact&theme=rose&hide_border=true" alt="Top Langs" height="180px">
+        <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=ovenslove&layout=compact&theme=rose&hide_border=true" alt="Top Langs" height="180px">
       </td>
     </tr>
     <tr>
       <td align="center" colspan="2">
-        <img src="https://github-readme-streak-stats.herokuapp.com/?user=ovenslove&theme=rose&hide_border=true" alt="Commit Streak" width="100%">
+        <img src="https://streak-stats.demolab.com/?user=ovenslove&theme=rose&hide_border=true" alt="Commit Streak" width="100%">
       </td>
     </tr>
   </table>
