@@ -2,6 +2,23 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.19](https://github.com/ovenslove/shiva.ink/compare/v1.0.18...v1.0.19) (2026-03-05)
+
+
+### 📦️ 构建系统 / Build System
+
+* 升级前端依赖版本至最新稳定版 ([640b5d2](https://github.com/ovenslove/shiva.ink/commit/640b5d24fe2b9f2b6b2726019ced7ca39b07ce09))
+
+
+### ♻️ 重构 / Refactor
+
+* **routing:** 统一内容详情路由并修复高亮样式 ([93f755f](https://github.com/ovenslove/shiva.ink/commit/93f755f263f674d635cead6aa984abbbdd6a99a6))
+
+
+### 👷 持续集成 / CI
+
+* 改进自动发布工作流的稳定性和错误处理 ([c4ac9ec](https://github.com/ovenslove/shiva.ink/commit/c4ac9ecd5c25d0ee0822b8758360556f0f74f2a8))
+
 ### [1.0.18](https://github.com/ovenslove/shiva.ink/compare/v1.0.17...v1.0.18) (2026-03-05)
 
 
