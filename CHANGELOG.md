@@ -2,6 +2,13 @@
 
 所有显著的版本变更都将记录在此文件中。
 
+### [1.0.20](https://github.com/ovenslove/shiva.ink/compare/v1.0.19...v1.0.20) (2026-03-06)
+
+
+### 📝 文档 / Documentation
+
+* 重构 README 以提升项目展示效果与可读性 ([a10365a](https://github.com/ovenslove/shiva.ink/commit/a10365a62ff460bbe25b30c041fb8a36df694d83))
+
 ### [1.0.19](https://github.com/ovenslove/shiva.ink/compare/v1.0.18...v1.0.19) (2026-03-05)
 
 
